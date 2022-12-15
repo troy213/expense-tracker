@@ -1,0 +1,52 @@
+.modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.3);
+  height: 100%;
+  width: 100%;
+  min-width: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+
+  &__container {
+    position: relative;
+    margin: 0 2rem;
+    background-color: $light;
+    border-radius: 1rem;
+    min-height: 100px;
+    min-width: 100px;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 4;
+    transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
+
+    &.dark {
+      background-color: $theme-dark;
+      color: $light;
+    }
+
+    &.dark .modal__close {
+      color: $light;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: $dark;
+    transition: color 500ms ease-in-out;
+  }
+
+  &__content--default {
+    padding: 3rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

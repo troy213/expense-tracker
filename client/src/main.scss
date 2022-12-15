@@ -1,0 +1,18 @@
+@import 'config';
+@import 'global';
+@import 'variables';
+
+// components
+@import './components/Modal/index.scss';
+@import './components/Navbar/index.scss';
+@import './components/Spinner/index.scss';
+@import './components/TransactionsHistory/index.scss';
+
+// pages
+@import './pages/404';
+@import './pages/Dashboard';
+@import './pages/Login';
+@import './pages/Register';
+@import './pages/Reports';
+@import './pages/Settings';
+@import './pages/Unauthorized';
