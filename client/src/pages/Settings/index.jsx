@@ -1,13 +1,23 @@
 import { useState } from 'react'
-import { Modal } from '../../components'
+import { useSelector } from 'react-redux'
+import { categoryAction } from '../../store/category-slice'
+
+import { Modal, Form } from '../../components'
+import { ADD_CATEGORY_FORM } from './const'
 
 const Settings = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const categoryState = useSelector((state) => state.category)
 
   return (
     <div className='settings'>
       <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
-        Add Category
+        <p className='text--bold'>Add Category</p>
+        <Form
+          schema={ADD_CATEGORY_FORM}
+          state={categoryState}
+          action={categoryAction}
+        />
       </Modal>
 
       <div className='settings__header'>
