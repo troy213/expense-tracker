@@ -1,0 +1,30 @@
+.transaction-history {
+  display: flex;
+  flex-direction: column;
+
+  &__month,
+  &__date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-bottom: 1px solid $primary-color-light;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-action {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+  }
+}

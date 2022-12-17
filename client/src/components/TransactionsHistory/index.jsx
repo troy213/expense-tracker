@@ -9,7 +9,7 @@ const TransactionHistory = (props) => {
     <section className='transaction-history'>
       {transactions.map((monthData, monthIndex) => {
         return (
-          <div className='transaction-history__month' key={monthIndex}>
+          <div className='transaction-history__month mt-4' key={monthIndex}>
             <p className='text--bold'>{monthData.month}</p>
             {monthData.data.map((dateData, dateIndex) => {
               return (

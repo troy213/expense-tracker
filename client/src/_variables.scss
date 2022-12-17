@@ -1,18 +1,13 @@
-$primary-color: #576cdb;
-$primary-color-light: #a8b4f3;
-$primary-color-dark: #2b3c8f;
+$primary-color: #3079d9;
+$primary-color-light: #adc0d9;
+$primary-color-dark: #182940;
+$primary-color-hover: #4399df;
+$primary-color-gradient: $primary-color, #2585d9;
 
-$color-purple: #8153db;
-$color-orange: #db896e;
-$color-orange-light: #e8ae68;
-$color-yellow: #ffcc4f;
-$color-yellow-light: #fff042;
+$color-danger: #d95445;
+$color-danger-light: #df938a;
+$color-success: #768c18;
+$color-success-light: #b4d91a;
 
 $dark: #333333;
-$light: #fafafa;
-
-$theme-dark: #33374a;
-
-$typewriter-speed: 4s;
-$typewriter-steps: 16;
-$blink-speed: 750ms;
+$light: #f2f2f2;

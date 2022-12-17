@@ -1,14 +1,15 @@
 import { REPORTS_DATA } from '../../data/reportsData'
+import { ChevronLeftIcon, FilterIcon } from '../../assets/icons'
 
 const Reports = () => {
   return (
     <div className='reports'>
       <div className='reports__header'>
         <div className='reports__title'>
-          <i>-icon-</i>
+          <ChevronLeftIcon />
           <p className='text--bold'>Reports</p>
         </div>
-        <i>-icon-</i>
+        <FilterIcon />
       </div>
       <p className='text--light text--3'>1 January 2022 - 31 March 2022</p>
       <div className='reports__chart-container'></div>
@@ -22,7 +23,13 @@ const Reports = () => {
               <p className='text--bold'>
                 {type === 'income' ? 'Total Income' : 'Total Outcome'}
               </p>
-              <p className='text--bold'>Rp{totalAmount}</p>
+              <p
+                className={`text--bold${
+                  type === 'income' ? ' text--success' : ' text--danger'
+                }`}
+              >
+                Rp{totalAmount}
+              </p>
             </div>
             {data.map((item, index) => {
               const { category, amount } = item

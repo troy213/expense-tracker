@@ -22,8 +22,8 @@ const TransactionDetail = (props) => {
               {description ? description : '-'}
             </p>
             <div className='transaction-history__detail-action'>
-              <button className='btn btn-info'>Edit</button>
-              <button className='btn btn-danger'>Delete</button>
+              <button className='btn btn-info text--light'>Edit</button>
+              <button className='btn btn-danger text--light'>Delete</button>
             </div>
           </div>
         )

@@ -1,0 +1,48 @@
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  min-height: 100vh;
+  background-color: $light;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  &__input-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__input {
+    padding: 1em 0;
+    border: none;
+    border-bottom: 1px solid $primary-color-dark;
+    outline: none;
+    font-size: 1rem;
+    background-color: transparent;
+
+    &::placeholder {
+      font-size: 0.75rem;
+      color: rgba($color: $primary-color-dark, $alpha: 0.5);
+    }
+
+    &:focus {
+      border-bottom: 2px solid $primary-color-dark;
+    }
+  }
+}

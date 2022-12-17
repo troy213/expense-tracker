@@ -14,6 +14,15 @@ html {
 body {
   font-family: 'Open Sans', sans-serif;
   min-width: 360px;
+  color: $primary-color-dark;
+}
+
+a {
+  text-decoration: none;
+}
+
+@mixin gradient($direction, $list) {
+  background: linear-gradient($direction, $list);
 }
 
 @mixin transition-ease($ms) {

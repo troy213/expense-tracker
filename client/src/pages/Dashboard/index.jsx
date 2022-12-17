@@ -1,5 +1,6 @@
 import { TRANSACTIONS_DATA } from '../../data/transactionData'
 import { TransactionHistory, Navbar } from '../../components'
+import { SearchIcon } from '../../assets/icons'
 
 const Dashboard = () => {
   return (
@@ -8,7 +9,7 @@ const Dashboard = () => {
         <p className='text--light'>
           Hi, <span className='text--bold'>User</span>
         </p>
-        <i>-icon-</i>
+        <SearchIcon />
       </div>
       <section className='dashboard__widget-container'>
         <div className='dashboard__widget-big'>
@@ -28,7 +29,6 @@ const Dashboard = () => {
       </section>
 
       <TransactionHistory transactionsData={TRANSACTIONS_DATA} />
-      <Navbar />
     </div>
   )
 }

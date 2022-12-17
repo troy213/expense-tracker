@@ -1,12 +1,13 @@
+@import 'variables';
 @import 'config';
 @import 'global';
-@import 'variables';
 
 // components
-@import './components/Modal/index.scss';
-@import './components/Navbar/index.scss';
-@import './components/Spinner/index.scss';
-@import './components/TransactionsHistory/index.scss';
+@import './components/Form';
+@import './components/Modal';
+@import './components/Navbar';
+@import './components/Spinner';
+@import './components/TransactionsHistory';
 
 // pages
 @import './pages/404';

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { addTransactionAction } from '../../store/add-transaction-slice'
 
 import { Modal, Form } from '../'
+import { ReportsIcon, AddIcon, UserIcon } from '../../assets/icons'
 import { ADD_TRANSACTION_FORM } from './const'
 
 const Navbar = () => {
@@ -12,19 +14,28 @@ const Navbar = () => {
   return (
     <div className='navbar'>
       <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
-        <p className='text--bold'>Add Transaction</p>
-        <Form
-          schema={ADD_TRANSACTION_FORM}
-          state={transactionState}
-          action={addTransactionAction}
-        />
+        <div className='modal__content--default'>
+          <p className='text--bold'>Add Transaction</p>
+          <Form
+            schema={ADD_TRANSACTION_FORM}
+            state={transactionState}
+            action={addTransactionAction}
+          />
+        </div>
       </Modal>
 
-      <button className='navbar__button'>-icon-</button>
-      <button className='navbar__button' onClick={() => setModalIsOpen(true)}>
-        -icon-
+      <Link to='/reports' className='navbar__button'>
+        <ReportsIcon />
+      </Link>
+      <button
+        className='navbar__button navbar__button-main'
+        onClick={() => setModalIsOpen(true)}
+      >
+        <AddIcon />
       </button>
-      <button className='navbar__button'>-icon-</button>
+      <Link to='/settings' className='navbar__button'>
+        <UserIcon />
+      </Link>
     </div>
   )
 }

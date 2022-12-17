@@ -21,7 +21,7 @@ const Form = (props) => {
         const { id, label, type } = field
 
         return (
-          <div key={fieldIndex}>
+          <div key={fieldIndex} className='form__input-wrapper'>
             <label htmlFor={id} className='text--light text--3'>
               {label}
             </label>
@@ -75,10 +75,10 @@ const Form = (props) => {
           </div>
         )
       })}
-      <button type='submit' className='btn btn-primary'>
+      <button type='submit' className='btn btn-lg btn-primary'>
         Add
       </button>
-      <button className='btn btn-outline'>Cancel</button>
+      <button className='btn btn-lg btn-primary-outline'>Cancel</button>
     </form>
   )
 }
