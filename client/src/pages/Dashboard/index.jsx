@@ -1,15 +1,49 @@
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { searchAction } from '../../store/search-slice'
+
 import { TRANSACTIONS_DATA } from '../../data/transactionData'
-import { TransactionHistory, Navbar } from '../../components'
+import { TransactionHistory, Form, Modal } from '../../components'
 import { SearchIcon } from '../../assets/icons'
+import { SEARCH_FORM } from './const'
 
 const Dashboard = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const searchState = useSelector((state) => state.search)
+  const dispatch = useDispatch()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(searchState)
+  }
+
+  const handleCancel = () => {
+    dispatch(searchAction.clearForm())
+    setModalIsOpen(false)
+  }
+
   return (
     <div className='dashboard'>
+      <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+        <div className='modal__content--default'>
+          <p className='text--bold'>Search</p>
+          <Form
+            schema={SEARCH_FORM}
+            state={searchState}
+            action={searchAction}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            submitLabel='Search'
+          />
+        </div>
+      </Modal>
       <div className='dashboard__header'>
         <p className='text--light'>
           Hi, <span className='text--bold'>User</span>
         </p>
-        <SearchIcon />
+        <button className='btn btn-link' onClick={() => setModalIsOpen(true)}>
+          <SearchIcon />
+        </button>
       </div>
       <section className='dashboard__widget-container'>
         <div className='dashboard__widget-big'>

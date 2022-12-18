@@ -9,6 +9,12 @@
   &__header {
     display: flex;
     gap: 0.5rem;
+
+    &-wrapper {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
   }
 
   &__link {
@@ -17,5 +23,18 @@
     gap: 1rem;
     padding: 1rem 0;
     cursor: pointer;
+  }
+
+  &__coming-soon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    & > div {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
   }
 }

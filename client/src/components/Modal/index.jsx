@@ -13,12 +13,7 @@ const Modal = ({ open, children, onClose }) => {
 
   return ReactDOM.createPortal(
     <div className='modal' id='modal' onClick={handleModal}>
-      <div className={`modal__container`}>
-        {children}
-        <span className='modal__close' onClick={onClose}>
-          &times;
-        </span>
-      </div>
+      <div className={`modal__container`}>{children}</div>
     </div>,
     document.getElementById('portal')
   )

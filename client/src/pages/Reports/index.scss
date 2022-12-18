@@ -9,12 +9,12 @@
   &__header {
     display: flex;
     justify-content: space-between;
-  }
 
-  &__title {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    &-wrapper {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
   }
 
   &__detail {

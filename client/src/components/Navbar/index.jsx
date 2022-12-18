@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { addTransactionAction } from '../../store/add-transaction-slice'
 
 import { Modal, Form } from '../'
@@ -10,6 +10,17 @@ import { ADD_TRANSACTION_FORM } from './const'
 const Navbar = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const transactionState = useSelector((state) => state.addTransaction)
+  const dispatch = useDispatch()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(transactionState)
+  }
+
+  const handleCancel = () => {
+    dispatch(addTransactionAction.clearForm())
+    setModalIsOpen(false)
+  }
 
   return (
     <div className='navbar'>
@@ -20,6 +31,9 @@ const Navbar = () => {
             schema={ADD_TRANSACTION_FORM}
             state={transactionState}
             action={addTransactionAction}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            submitLabel='Add'
           />
         </div>
       </Modal>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate, Link } from 'react-router-dom'
 import { categoryAction } from '../../store/category-slice'
 
 import { Modal, Form } from '../../components'
@@ -16,9 +17,23 @@ import { ADD_CATEGORY_FORM } from './const'
 const Settings = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const categoryState = useSelector((state) => state.category)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const goBack = () => navigate(-1)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(categoryState)
+  }
+
+  const handleCancel = () => {
+    dispatch(categoryAction.clearForm())
+    setModalIsOpen(false)
+  }
 
   return (
-    <div className='settings'>
+    <section className='settings'>
       <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
         <div className='modal__content--default'>
           <p className='text--bold'>Add Category</p>
@@ -26,21 +41,26 @@ const Settings = () => {
             schema={ADD_CATEGORY_FORM}
             state={categoryState}
             action={categoryAction}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            submitLabel='Add'
           />
         </div>
       </Modal>
 
       <div className='settings__header'>
-        <ChevronLeftIcon />
-        <p className='text--bold'>Settings</p>
+        <button className='settings__header-wrapper btn-link' onClick={goBack}>
+          <ChevronLeftIcon />
+          <p className='text--bold'>Settings</p>
+        </button>
       </div>
       <p className='text--light'>
         Hi, <span className='text--bold'>User</span>
       </p>
-      <a href='#' className='settings__link'>
+      <Link to='/account' className='settings__link'>
         <UserIcon />
         <p className='text--bold'>Account Settings</p>
-      </a>
+      </Link>
       <button
         className='settings__link btn-link'
         onClick={() => setModalIsOpen(true)}
@@ -49,18 +69,28 @@ const Settings = () => {
         <p className='text--bold'>Edit Category</p>
       </button>
       <button className='settings__link btn-link'>
-        <BudgetIcon />
-        <p className='text--bold'>Add Budget</p>
+        <div className='settings__coming-soon'>
+          <div>
+            <BudgetIcon />
+            <p className='text--bold'>Add Budget</p>
+          </div>
+          <p className='text--light text--3'>coming soon</p>
+        </div>
       </button>
       <button className='settings__link btn-link'>
-        <ExportIcon />
-        <p className='text--bold'>Export Data</p>
+        <div className='settings__coming-soon'>
+          <div>
+            <ExportIcon />
+            <p className='text--bold'>Export Data</p>
+          </div>
+          <p className='text--light text--3'>coming soon</p>
+        </div>
       </button>
       <button className='settings__link btn-link mt-4'>
         <SignOutIcon />
         <p className='text--bold text--danger'>Sign Out</p>
       </button>
-    </div>
+    </section>
   )
 }
 

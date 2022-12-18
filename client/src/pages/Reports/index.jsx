@@ -1,15 +1,55 @@
-import { REPORTS_DATA } from '../../data/reportsData'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { filterAction } from '../../store/filter-slice'
+
+import { Form, Modal } from '../../components'
 import { ChevronLeftIcon, FilterIcon } from '../../assets/icons'
+import { FILTER_FORM } from './const'
+import { REPORTS_DATA } from '../../data/reportsData'
 
 const Reports = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const filterState = useSelector((state) => state.filter)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const goBack = () => navigate(-1)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(filterState)
+  }
+
+  const handleCancel = () => {
+    dispatch(filterAction.clearForm())
+    setModalIsOpen(false)
+  }
+
   return (
     <div className='reports'>
+      <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+        <div className='modal__content--default'>
+          <p className='text--bold'>Filter</p>
+          <Form
+            schema={FILTER_FORM}
+            state={filterState}
+            action={filterAction}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            submitLabel='Submit'
+          />
+        </div>
+      </Modal>
+
       <div className='reports__header'>
-        <div className='reports__title'>
+        <button className='reports__header-wrapper btn-link' onClick={goBack}>
           <ChevronLeftIcon />
           <p className='text--bold'>Reports</p>
-        </div>
-        <FilterIcon />
+        </button>
+        <button className='btn-link' onClick={() => setModalIsOpen(true)}>
+          <FilterIcon />
+        </button>
       </div>
       <p className='text--light text--3'>1 January 2022 - 31 March 2022</p>
       <div className='reports__chart-container'></div>

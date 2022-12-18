@@ -9,6 +9,7 @@ import {
   NotFound,
   Settings,
   Reports,
+  AccountSettings,
 } from './pages'
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
       {/* private routes */}
       <Route path='/' element={<Layout />}>
         <Route path='/' element={<Dashboard />} />
+        <Route path='account' element={<AccountSettings />} />
         <Route path='reports' element={<Reports />} />
         <Route path='settings' element={<Settings />} />
       </Route>

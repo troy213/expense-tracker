@@ -3,20 +3,23 @@ import { useDispatch } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const Form = (props) => {
-  const { schema, state, action } = props
+  const {
+    schema,
+    state,
+    action,
+    onSubmit,
+    onCancel,
+    submitLabel = 'Submit',
+    isCancelable = true,
+  } = props
   const dispatch = useDispatch()
 
   const handleChange = (field, value) => {
     dispatch(action.setInputField({ field, value }))
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(state)
-  }
-
   return (
-    <form className='form' onSubmit={handleSubmit}>
+    <form className='form' onSubmit={onSubmit}>
       {schema.map((field, fieldIndex) => {
         const { id, label, type } = field
 
@@ -75,10 +78,14 @@ const Form = (props) => {
           </div>
         )
       })}
-      <button type='submit' className='btn btn-lg btn-primary'>
-        Add
+      <button type='submit' className='btn btn-lg btn-primary mt-4'>
+        {submitLabel}
       </button>
-      <button className='btn btn-lg btn-primary-outline'>Cancel</button>
+      {isCancelable ? (
+        <button className='btn btn-lg btn-primary-outline' onClick={onCancel}>
+          Cancel
+        </button>
+      ) : null}
     </form>
   )
 }

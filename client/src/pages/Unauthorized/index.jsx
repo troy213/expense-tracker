@@ -7,10 +7,22 @@ const Unauthorized = () => {
 
   return (
     <section className='unauthorized'>
-      <h1>401 Unauthorized</h1>
-      <p>You do not have access to the requested page.</p>
-      <br />
-      <button onClick={goBack}>Go Back</button>
+      <div className='unauthorized__content'>
+        <div className='unauthorized__content-wrapper'>
+          <p className='text--bold text--8'>401 Unauthorized</p>
+          <p className='text--light'>
+            You do not have access to the requested page
+          </p>
+        </div>
+        <div className='unauthorized__btn-wrapper'>
+          <button className='btn btn-light-outline' onClick={goBack}>
+            Back
+          </button>
+        </div>
+      </div>
+      <p className='text--center text--light text--3'>
+        Copyright © 2022 Tritera Erlangga. All Rights Reserved
+      </p>
     </section>
   )
 }
