@@ -15,7 +15,7 @@ const TransactionMonth = (props) => {
 
   return (
     <div className='transaction-history__month mt-4'>
-      <div className='transaction-history__date-wrapper'>
+      <div className='transaction-history__month-wrapper'>
         <p className='text--bold'>{monthData.month}</p>
         <p
           className={`text--bold${
