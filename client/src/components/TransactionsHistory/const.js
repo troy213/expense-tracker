@@ -3,6 +3,7 @@ export const EDIT_TRANSACTION_FORM = [
     id: 'date',
     label: 'Date',
     type: 'date',
+    placeholder: 'mm/dd/yyyy',
   },
   {
     id: 'type',
@@ -56,10 +57,12 @@ export const EDIT_TRANSACTION_FORM = [
     id: 'description',
     label: 'Description',
     type: 'text',
+    placeholder: 'description',
   },
   {
     id: 'amount',
     label: 'Amount (Rp)',
     type: 'number',
+    placeholder: '100.000,00',
   },
 ]

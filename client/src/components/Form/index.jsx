@@ -21,7 +21,7 @@ const Form = (props) => {
   return (
     <form className='form' onSubmit={onSubmit}>
       {schema.map((field, fieldIndex) => {
-        const { id, label, type } = field
+        const { id, label, type, placeholder = '' } = field
 
         return (
           <div key={fieldIndex} className='form__input-wrapper'>
@@ -35,6 +35,7 @@ const Form = (props) => {
                 selected={state[id] && new Date(state[id])}
                 onChange={(date) => handleChange(id, date.toISOString())}
                 className={`form__input`}
+                placeholderText={placeholder}
               />
             ) : null}
 
@@ -63,6 +64,7 @@ const Form = (props) => {
                 value={state[id]}
                 onChange={(e) => handleChange(id, e.target.value)}
                 className={`form__input`}
+                placeholder={placeholder}
               />
             ) : null}
 
@@ -73,6 +75,7 @@ const Form = (props) => {
                 value={state[id]}
                 onChange={(e) => handleChange(id, e.target.value)}
                 className={`form__input`}
+                placeholder={placeholder}
               />
             ) : null}
           </div>

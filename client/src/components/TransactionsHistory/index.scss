@@ -9,6 +9,15 @@
     gap: 0.5rem;
   }
 
+  &__date {
+    &-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 1rem;
+    }
+  }
+
   &__detail {
     display: flex;
     flex-direction: column;

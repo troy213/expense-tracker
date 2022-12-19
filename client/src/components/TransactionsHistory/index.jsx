@@ -1,4 +1,4 @@
-import TransactionDetail from './TransactionDetail'
+import TransactionMonth from './TransactionMonth'
 import getGroupedTransaction from '../../utils/getGroupedTransaction'
 
 const TransactionHistory = (props) => {
@@ -7,20 +7,8 @@ const TransactionHistory = (props) => {
 
   return (
     <section className='transaction-history'>
-      {transactions.map((monthData, monthIndex) => {
-        return (
-          <div className='transaction-history__month mt-4' key={monthIndex}>
-            <p className='text--bold'>{monthData.month}</p>
-            {monthData.data.map((dateData, dateIndex) => {
-              return (
-                <div className='transaction-history__date' key={dateIndex}>
-                  <p className='text--light text--3'>{dateData.date}</p>
-                  <TransactionDetail transactionDetail={dateData.data} />
-                </div>
-              )
-            })}
-          </div>
-        )
+      {transactions.map((monthData, index) => {
+        return <TransactionMonth monthData={monthData} key={index} />
       })}
     </section>
   )

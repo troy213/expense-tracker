@@ -16,5 +16,6 @@ export const ADD_CATEGORY_FORM = [
     id: 'category',
     label: 'Category Name',
     type: 'text',
+    placeholder: 'category name',
   },
 ]
