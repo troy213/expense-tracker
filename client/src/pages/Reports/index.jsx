@@ -14,7 +14,7 @@ const Reports = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const goBack = () => navigate(-1)
+  const goBack = () => navigate('/')
 
   const handleSubmit = (e) => {
     e.preventDefault()

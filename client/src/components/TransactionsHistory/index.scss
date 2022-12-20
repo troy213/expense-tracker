@@ -42,6 +42,13 @@
       display: flex;
       justify-content: flex-end;
       gap: 0.5rem;
+      max-height: 0;
+      overflow-y: hidden;
+      transition: max-height 500ms ease-in-out;
+
+      &.collapse {
+        max-height: 34px;
+      }
     }
   }
 }

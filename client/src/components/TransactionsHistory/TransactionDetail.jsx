@@ -8,10 +8,15 @@ import { EDIT_TRANSACTION_FORM } from './const'
 const TransactionDetail = (props) => {
   const { type, category, description, amount } = props.transactionDetail
 
+  const [isActive, setIsActive] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
   const editTransaction = useSelector((state) => state.editTransaction)
   const dispatch = useDispatch()
+
+  const handleCollapse = () => {
+    setIsActive(!isActive)
+  }
 
   const handleModal = (content) => {
     setModalContent(content)
@@ -64,7 +69,7 @@ const TransactionDetail = (props) => {
       <Modal open={modalIsOpen} onClose={() => setModalIsOpen(false)}>
         {renderModal[modalContent]}
       </Modal>
-      <div className='transaction-history__detail'>
+      <div className='transaction-history__detail' onClick={handleCollapse}>
         <div className='transaction-history__detail-header'>
           <p>{category}</p>
           <p
@@ -76,7 +81,11 @@ const TransactionDetail = (props) => {
           </p>
         </div>
         <p className='text--light text--3'>{description ? description : '-'}</p>
-        <div className='transaction-history__detail-action'>
+        <div
+          className={`transaction-history__detail-action${
+            isActive ? ' collapse' : ''
+          }`}
+        >
           <button
             className='btn btn-primary text--light'
             onClick={() => handleModal('editModal')}

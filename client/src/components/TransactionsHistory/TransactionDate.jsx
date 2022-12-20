@@ -10,16 +10,8 @@ const TransactionDate = (props) => {
 
   return (
     <div className='transaction-history__date'>
-      <div className='transaction-history__date-wrapper'>
-        <p className='text--light text--3'>{dateData.date}</p>
-        <p
-          className={`text--bold${
-            total >= 0 ? ' text--success' : ' text--danger'
-          }`}
-        >
-          {total >= 0 ? `Rp${total}` : `-Rp${total * -1}`}
-        </p>
-      </div>
+      <p className='text--light text--3'>{dateData.date}</p>
+
       {dateData.data.map((transactionDetail, index) => {
         return (
           <TransactionDetail
