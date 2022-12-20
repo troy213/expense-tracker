@@ -34,6 +34,10 @@
   color: $color-success;
 }
 
+.text--capitalize {
+  text-transform: capitalize;
+}
+
 .line-height--6 {
   line-height: 150%;
 }

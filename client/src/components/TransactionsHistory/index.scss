@@ -1,6 +1,14 @@
 .transaction-history {
   display: flex;
   flex-direction: column;
+  flex: 1;
+
+  &__empty {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
 
   &__month,
   &__date {
@@ -44,7 +52,7 @@
       gap: 0.5rem;
       max-height: 0;
       overflow-y: hidden;
-      transition: max-height 500ms ease-in-out;
+      transition: max-height 250ms ease-in-out;
 
       &.collapse {
         max-height: 34px;

@@ -1,8 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
 
 import { expenseTracker } from '../../assets/images'
 
 const Login = () => {
+  const navigate = useNavigate()
+  const { setAuth } = useAuth()
+
+  const handleLoginGuest = () => {
+    setAuth({ id: 'guest', username: 'guest', email: null, accessToken: null })
+    navigate('/')
+  }
+
   return (
     <section className='login'>
       <div className='login__container'>
@@ -43,9 +52,12 @@ const Login = () => {
           >
             Register
           </Link>
-          <Link to='/' className='link-danger text--bold text--center mt-4'>
+          <button
+            className='btn-link link-danger text--bold text--center mt-4'
+            onClick={handleLoginGuest}
+          >
             Login as guest
-          </Link>
+          </button>
         </form>
       </div>
       <p className='login__footer text--light text--3'>

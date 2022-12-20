@@ -7,9 +7,15 @@ const TransactionHistory = (props) => {
 
   return (
     <section className='transaction-history'>
-      {transactions.map((monthData, index) => {
-        return <TransactionMonth monthData={monthData} key={index} />
-      })}
+      {transactions.length ? (
+        transactions.map((monthData, index) => {
+          return <TransactionMonth monthData={monthData} key={index} />
+        })
+      ) : (
+        <div className='transaction-history__empty'>
+          <p className='text--light'>There is no data</p>
+        </div>
+      )}
     </section>
   )
 }

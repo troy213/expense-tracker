@@ -36,6 +36,7 @@ const Form = (props) => {
                 onChange={(date) => handleChange(id, date.toISOString())}
                 className={`form__input`}
                 placeholderText={placeholder}
+                dateFormat='dd/MM/yyyy'
               />
             ) : null}
 

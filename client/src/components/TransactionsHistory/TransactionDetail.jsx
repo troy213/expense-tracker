@@ -11,7 +11,7 @@ const TransactionDetail = (props) => {
   const [isActive, setIsActive] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
-  const editTransaction = useSelector((state) => state.editTransaction)
+  const editTransactionState = useSelector((state) => state.editTransaction)
   const dispatch = useDispatch()
 
   const handleCollapse = () => {
@@ -25,7 +25,7 @@ const TransactionDetail = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(editTransaction)
+    console.log(editTransactionState)
   }
 
   const handleCancel = () => {
@@ -39,7 +39,7 @@ const TransactionDetail = (props) => {
         <p className='text--bold'>Edit Transaction</p>
         <Form
           schema={EDIT_TRANSACTION_FORM}
-          state={editTransaction}
+          state={editTransactionState}
           action={editTransactionAction}
           onSubmit={handleSubmit}
           onCancel={handleCancel}

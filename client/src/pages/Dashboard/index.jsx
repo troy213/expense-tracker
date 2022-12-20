@@ -6,11 +6,13 @@ import { TRANSACTIONS_DATA } from '../../data/transactionData'
 import { TransactionHistory, Form, Modal } from '../../components'
 import { SearchIcon } from '../../assets/icons'
 import { SEARCH_FORM } from './const'
+import useAuth from '../../hooks/useAuth'
 
 const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const searchState = useSelector((state) => state.search)
   const dispatch = useDispatch()
+  const { auth } = useAuth()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -39,7 +41,8 @@ const Dashboard = () => {
       </Modal>
       <div className='dashboard__header'>
         <p className='text--light'>
-          Hi, <span className='text--bold'>User</span>
+          Hi,{' '}
+          <span className='text--bold text--capitalize'>{auth?.username}</span>
         </p>
         <button className='btn btn-link' onClick={() => setModalIsOpen(true)}>
           <SearchIcon />

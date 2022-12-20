@@ -3,7 +3,7 @@ export const ADD_TRANSACTION_FORM = [
     id: 'date',
     label: 'Date',
     type: 'date',
-    placeholder: 'mm/dd/yyyy',
+    placeholder: 'dd/MM/yyyy',
   },
   {
     id: 'type',
