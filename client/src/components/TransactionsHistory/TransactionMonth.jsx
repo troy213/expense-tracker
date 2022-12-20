@@ -1,4 +1,5 @@
 import TransactionDate from './TransactionDate'
+import { formatCurrency } from '../../utils/formatCurrency'
 
 const TransactionMonth = (props) => {
   const { monthData } = props
@@ -22,7 +23,7 @@ const TransactionMonth = (props) => {
             total >= 0 ? ' text--success' : ' text--danger'
           }`}
         >
-          {total >= 0 ? `Rp${total}` : `-Rp${total * -1}`}
+          {formatCurrency(total)}
         </p>
       </div>
       {monthData.data.map((dateData, index) => {

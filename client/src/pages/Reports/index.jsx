@@ -7,6 +7,7 @@ import { Form, Modal } from '../../components'
 import { ChevronLeftIcon, FilterIcon } from '../../assets/icons'
 import { FILTER_FORM } from './const'
 import { REPORTS_DATA } from '../../data/reportsData'
+import { formatCurrency } from '../../utils/formatCurrency'
 
 const Reports = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -68,7 +69,7 @@ const Reports = () => {
                   type === 'income' ? ' text--success' : ' text--danger'
                 }`}
               >
-                Rp{totalAmount}
+                {formatCurrency(totalAmount)}
               </p>
             </div>
             {data.map((item, index) => {
@@ -77,7 +78,9 @@ const Reports = () => {
               return (
                 <div className='reports__detail-body' key={index}>
                   <p className='text--light text--3'>{category}</p>
-                  <p className='text--light text--3'>Rp{amount}</p>
+                  <p className='text--light text--3'>
+                    {formatCurrency(amount)}
+                  </p>
                 </div>
               )
             })}

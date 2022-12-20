@@ -3,16 +3,16 @@ import { createSlice } from '@reduxjs/toolkit'
 const addTransactionSlice = createSlice({
   name: 'addTransaction',
   initialState: {
-    date: '',
+    date: new Date().toISOString(),
     type: '',
     category: '',
     description: '',
     amount: '',
     error: {
-      date: '',
-      type: '',
-      category: '',
-      amount: '',
+      date: false,
+      type: false,
+      category: false,
+      amount: false,
     },
     modalValue: '',
   },

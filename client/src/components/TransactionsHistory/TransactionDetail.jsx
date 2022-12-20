@@ -4,6 +4,7 @@ import { editTransactionAction } from '../../store/edit-transaction-slice'
 
 import { Form, Modal } from '../'
 import { EDIT_TRANSACTION_FORM } from './const'
+import { formatCurrency } from '../../utils/formatCurrency'
 
 const TransactionDetail = (props) => {
   const { type, category, description, amount } = props.transactionDetail
@@ -77,7 +78,7 @@ const TransactionDetail = (props) => {
               type === 'income' ? 'text--success' : 'text--danger'
             }`}
           >
-            Rp{amount}
+            {formatCurrency(amount)}
           </p>
         </div>
         <p className='text--light text--3'>{description ? description : '-'}</p>
