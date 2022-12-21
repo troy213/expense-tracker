@@ -7,7 +7,7 @@ const TransactionMonth = (props) => {
   const total = monthData.data
     .map((value) => {
       const dateTotal = value.data.reduce((acc, curr) => {
-        const amount = curr.type === 'income' ? curr.amount : curr.amount * -1
+        const amount = curr.type === 'Income' ? curr.amount : curr.amount * -1
         return acc + amount
       }, 0)
       return dateTotal

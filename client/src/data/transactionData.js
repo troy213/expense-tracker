@@ -2,7 +2,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '1',
     date: '2022-03-03T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Education',
     description: 'Pay education tuition',
     amount: 3000000,
@@ -10,7 +10,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '2',
     date: '2022-03-03T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Transportation',
     description: 'Train ticket',
     amount: 30000,
@@ -18,7 +18,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '3',
     date: '2022-03-03T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Food & Beverage',
     description: 'Pizza hut',
     amount: 200000,
@@ -26,7 +26,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '4',
     date: '2022-03-01T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Entertainment',
     description: 'Watch cinema',
     amount: 70000,
@@ -42,7 +42,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '6',
     date: '2022-02-15T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Education',
     description: 'Pay education tuition',
     amount: 3000000,
@@ -50,7 +50,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '7',
     date: '2022-02-15T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Transportation',
     description: 'Train ticket',
     amount: 30000,
@@ -58,7 +58,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '8',
     date: '2022-02-09T07:56:00.573Z',
-    type: 'outcome',
+    type: 'Outcome',
     category: 'Charity',
     description: '',
     amount: 50000,
@@ -66,7 +66,7 @@ export const TRANSACTIONS_DATA = [
   {
     id: '9',
     date: '2022-02-01T07:56:00.573Z',
-    type: 'income',
+    type: 'Income',
     category: 'Salary',
     description: 'Monthly salary',
     amount: 7000000,

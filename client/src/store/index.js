@@ -4,6 +4,7 @@ import editTransactionSlice from './edit-transaction-slice'
 import categorySlice from './category-slice'
 import filterSlice from './filter-slice'
 import searchSlice from './search-slice'
+import transactionsDataSlice from './transaction-data-slice'
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     category: categorySlice.reducer,
     filter: filterSlice.reducer,
     search: searchSlice.reducer,
+    transactionsData: transactionsDataSlice.reducer,
   },
 })
 

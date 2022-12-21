@@ -15,7 +15,6 @@ const Form = (props) => {
   const dispatch = useDispatch()
 
   const handleChange = (field, value, validation = '') => {
-    console.log(validation)
     if (validation) {
       if (validation.test(value)) {
         dispatch(action.setInputField({ field, value }))

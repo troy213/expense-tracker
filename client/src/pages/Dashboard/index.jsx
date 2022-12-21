@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { searchAction } from '../../store/search-slice'
+import { transactionsDataAction } from '../../store/transaction-data-slice'
 
-import { TRANSACTIONS_DATA } from '../../data/transactionData'
 import { TransactionHistory, Form, Modal } from '../../components'
 import { SearchIcon } from '../../assets/icons'
 import { SEARCH_FORM } from './const'
@@ -11,20 +11,55 @@ import { formatCurrency } from '../../utils/formatCurrency'
 
 const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [totalIncome, setTotalIncome] = useState(0)
+  const [totalOutcome, setTotalOutcome] = useState(0)
+
   const searchState = useSelector((state) => state.search)
+  const { transactionsData } = useSelector((state) => state.transactionsData)
   const dispatch = useDispatch()
   const { auth, setAuth } = useAuth()
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem('isGuest'))) {
+    const isGuest = JSON.parse(localStorage.getItem('isGuest'))
+    const localStorageData = JSON.parse(
+      localStorage.getItem('transactionsData')
+    )
+
+    if (isGuest) {
       setAuth({
         id: 'guest',
         username: 'guest',
         email: null,
         accessToken: null,
       })
+
+      if (localStorageData) {
+        dispatch(
+          transactionsDataAction.setTransactionsData({
+            value: localStorageData,
+          })
+        )
+      }
     }
   }, [])
+
+  useEffect(() => {
+    const income = transactionsData.reduce((acc, curr) => {
+      if (curr.type === 'Income') {
+        return acc + curr.amount
+      }
+      return acc
+    }, 0)
+    const outcome = transactionsData.reduce((acc, curr) => {
+      if (curr.type === 'Outcome') {
+        return acc + curr.amount
+      }
+      return acc
+    }, 0)
+
+    setTotalIncome(income)
+    setTotalOutcome(outcome)
+  }, [transactionsData])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -66,21 +101,23 @@ const Dashboard = () => {
       <section className='dashboard__widget-container'>
         <div className='dashboard__widget-big'>
           <p className='text--light text--3'>Total Balance</p>
-          <p className='text--bold text--8'>{formatCurrency(7670000)}</p>
+          <p className='text--bold text--8'>
+            {formatCurrency(totalIncome - totalOutcome)}
+          </p>
         </div>
         <div className='dashboard__widget-small-container'>
           <div className='dashboard__widget-small-left'>
             <p className='text--light text--3'>Total Income (Rp)</p>
-            <p className='text--bold'>{formatCurrency(14000000)}</p>
+            <p className='text--bold'>{formatCurrency(totalIncome)}</p>
           </div>
           <div className='dashboard__widget-small-right'>
             <p className='text--light text--3'>Total Outcome (Rp)</p>
-            <p className='text--bold'>{formatCurrency(6330000)}</p>
+            <p className='text--bold'>{formatCurrency(totalOutcome)}</p>
           </div>
         </div>
       </section>
 
-      <TransactionHistory transactionsData={TRANSACTIONS_DATA} />
+      <TransactionHistory transactionsData={transactionsData} />
     </div>
   )
 }

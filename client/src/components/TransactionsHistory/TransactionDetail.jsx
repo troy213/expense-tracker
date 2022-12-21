@@ -75,7 +75,7 @@ const TransactionDetail = (props) => {
           <p>{category}</p>
           <p
             className={`${
-              type === 'income' ? 'text--success' : 'text--danger'
+              type === 'Income' ? 'text--success' : 'text--danger'
             }`}
           >
             {formatCurrency(amount)}
