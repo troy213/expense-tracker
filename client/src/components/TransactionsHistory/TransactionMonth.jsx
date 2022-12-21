@@ -1,8 +1,14 @@
 import TransactionDate from './TransactionDate'
-import { formatCurrency } from '../../utils/formatCurrency'
+import { formatCurrency } from '../../utils'
 
 const TransactionMonth = (props) => {
   const { monthData } = props
+
+  const sortedData = monthData.data.sort((a, b) => {
+    const dateA = new Date(a.date).getTime()
+    const dateB = new Date(b.date).getTime()
+    return dateB - dateA
+  })
 
   const total = monthData.data
     .map((value) => {
@@ -26,7 +32,7 @@ const TransactionMonth = (props) => {
           {formatCurrency(total)}
         </p>
       </div>
-      {monthData.data.map((dateData, index) => {
+      {sortedData.map((dateData, index) => {
         return <TransactionDate dateData={dateData} key={index} />
       })}
     </div>

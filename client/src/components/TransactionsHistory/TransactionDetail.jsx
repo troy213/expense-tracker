@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { editTransactionAction } from '../../store/edit-transaction-slice'
+import { transactionsDataAction } from '../../store/transaction-data-slice'
 
 import { Form, Modal } from '../'
 import { EDIT_TRANSACTION_FORM } from './const'
-import { formatCurrency } from '../../utils/formatCurrency'
+import { formatCurrency } from '../../utils'
 
 const TransactionDetail = (props) => {
-  const { type, category, description, amount } = props.transactionDetail
+  const { id, type, category, description, amount } = props.transactionDetail
+
+  const localStorageData = JSON.parse(localStorage.getItem('transactionsData'))
 
   const [isActive, setIsActive] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -34,6 +37,15 @@ const TransactionDetail = (props) => {
     setModalIsOpen(false)
   }
 
+  const handleDelete = (id) => {
+    const newData = localStorageData.filter(
+      (transaction) => transaction.id !== id
+    )
+    localStorage.setItem('transactionsData', JSON.stringify(newData))
+    dispatch(transactionsDataAction.setTransactionsData({ value: newData }))
+    setModalIsOpen(false)
+  }
+
   const renderModal = {
     editModal: (
       <div className='modal__content--default'>
@@ -54,7 +66,12 @@ const TransactionDetail = (props) => {
         <p className='text--light text--3'>
           Are you sure you want to delete this transaction?
         </p>
-        <button className='btn btn-lg btn-danger'>Delete</button>
+        <button
+          className='btn btn-lg btn-danger'
+          onClick={() => handleDelete(id)}
+        >
+          Delete
+        </button>
         <button
           className='btn btn-lg btn-primary-outline'
           onClick={() => setModalIsOpen(false)}

@@ -20,6 +20,9 @@ const Navbar = () => {
 
     let isValid = true
     const isGuest = JSON.parse(localStorage.getItem('isGuest'))
+    const localStorageData = JSON.parse(
+      localStorage.getItem('transactionsData')
+    )
 
     for (const obj in transactionState) {
       const EXCEPTION = ['error', 'description', 'modalValue']
@@ -56,7 +59,11 @@ const Navbar = () => {
         amount: parseInt(transactionState.amount),
       }
 
-      data = [...transactionsData, newData]
+      if (localStorageData) {
+        data = [...localStorageData, newData]
+      } else {
+        data = [...transactionsData, newData]
+      }
 
       localStorage.setItem('transactionsData', JSON.stringify(data))
       dispatch(transactionsDataAction.setTransactionsData({ value: data }))

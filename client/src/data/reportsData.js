@@ -1,6 +1,6 @@
 export const REPORTS_DATA = [
   {
-    type: 'outcome',
+    type: 'Outcome',
     data: [
       {
         category: 'Education',
@@ -21,7 +21,7 @@ export const REPORTS_DATA = [
     ],
   },
   {
-    type: 'income',
+    type: 'Income',
     data: [
       {
         category: 'Salary',

@@ -1,5 +1,5 @@
 import TransactionMonth from './TransactionMonth'
-import getGroupedTransaction from '../../utils/getGroupedTransaction'
+import { getGroupedTransaction } from '../../utils'
 
 const TransactionHistory = (props) => {
   const { transactionsData } = props

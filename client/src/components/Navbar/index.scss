@@ -10,6 +10,10 @@
   padding: 0.5rem;
   box-shadow: 0 -4px 16px rgba($color: #000000, $alpha: 0.25);
 
+  & a.navbar__button {
+    color: $primary-color;
+  }
+
   &__button {
     border: none;
 

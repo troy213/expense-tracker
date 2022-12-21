@@ -46,7 +46,11 @@ const getGroupedTransaction = (data) => {
     }
   }
 
-  return groupedData
+  return groupedData.sort((a, b) => {
+    const dateA = new Date(a.month).getTime()
+    const dateB = new Date(b.month).getTime()
+    return dateB - dateA
+  })
 }
 
 export default getGroupedTransaction

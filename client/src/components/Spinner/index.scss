@@ -1,7 +1,9 @@
+@import '../../variables';
+
 .spinner {
   width: 60px;
   padding: 8px;
-  // background: $primary-color-light;
+  background: $primary-color;
   position: absolute;
   top: 50%;
   left: 50%;

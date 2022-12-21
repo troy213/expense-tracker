@@ -3,16 +3,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { searchAction } from '../../store/search-slice'
 import { transactionsDataAction } from '../../store/transaction-data-slice'
 
-import { TransactionHistory, Form, Modal } from '../../components'
+import { TransactionHistory, Form, Modal, Spinner } from '../../components'
 import { SearchIcon } from '../../assets/icons'
 import { SEARCH_FORM } from './const'
 import useAuth from '../../hooks/useAuth'
-import { formatCurrency } from '../../utils/formatCurrency'
+import { formatCurrency } from '../../utils'
 
 const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [totalIncome, setTotalIncome] = useState(0)
   const [totalOutcome, setTotalOutcome] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
 
   const searchState = useSelector((state) => state.search)
   const { transactionsData } = useSelector((state) => state.transactionsData)
@@ -41,6 +42,8 @@ const Dashboard = () => {
         )
       }
     }
+
+    setIsLoading(false)
   }, [])
 
   useEffect(() => {
@@ -70,6 +73,13 @@ const Dashboard = () => {
     dispatch(searchAction.clearForm())
     setModalIsOpen(false)
   }
+
+  if (isLoading)
+    return (
+      <div className='dashboard'>
+        <Spinner />
+      </div>
+    )
 
   return (
     <div className='dashboard'>
