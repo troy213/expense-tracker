@@ -6,8 +6,8 @@ const filterSlice = createSlice({
     from: '',
     to: '',
     error: {
-      from: '',
-      to: '',
+      from: false,
+      to: false,
     },
     modalValue: '',
   },

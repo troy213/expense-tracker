@@ -18,6 +18,14 @@ const Form = (props) => {
     dispatch(action.setInputField({ field, value }))
   }
 
+  const handleChangeDependency = (schema, field, value) => {
+    const dependencies = schema.filter((value) => value.dependency === field)
+    for (const dependency of dependencies) {
+      dispatch(action.setInputField({ field: dependency.id, value: '' }))
+    }
+    dispatch(action.setInputField({ field, value }))
+  }
+
   return (
     <form className='form' onSubmit={onSubmit}>
       {schema.map((field, fieldIndex) => {
@@ -43,17 +51,39 @@ const Form = (props) => {
             {type === 'dropdown' ? (
               <select
                 id={id}
-                onChange={(e) => handleChange(id, e.target.value)}
+                onChange={(e) =>
+                  handleChangeDependency(schema, id, e.target.value)
+                }
                 value={state[id]}
                 className={`form__input`}
               >
-                <option value=''>-select-</option>
+                <option value=''>- select -</option>
                 {field.options.map((option, index) => {
                   return (
                     <option value={option.value} key={index}>
                       {option.value}
                     </option>
                   )
+                })}
+              </select>
+            ) : null}
+
+            {type === 'conditional-dropdown' ? (
+              <select
+                id={id}
+                onChange={(e) => handleChange(id, e.target.value)}
+                value={state[id]}
+                className={`form__input`}
+                disabled={!state[field.dependency] ? true : false}
+              >
+                <option value=''>- select -</option>
+                {field.options.map((option, index) => {
+                  if (option[field.dependency] === state[field.dependency])
+                    return (
+                      <option value={option.value} key={index}>
+                        {option.value}
+                      </option>
+                    )
                 })}
               </select>
             ) : null}

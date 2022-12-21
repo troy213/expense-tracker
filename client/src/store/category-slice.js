@@ -6,8 +6,8 @@ const categorySlice = createSlice({
     type: '',
     category: '',
     error: {
-      type: '',
-      category: '',
+      type: false,
+      category: false,
     },
     modalValue: '',
   },

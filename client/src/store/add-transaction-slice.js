@@ -33,6 +33,7 @@ const addTransactionSlice = createSlice({
 
         state[stateObj] = ''
       }
+      state.date = new Date().toISOString()
     },
   },
 })

@@ -7,6 +7,8 @@ import { Modal, Form } from '../'
 import { ReportsIcon, AddIcon, UserIcon } from '../../assets/icons'
 import { ADD_TRANSACTION_FORM } from './const'
 
+const DESCRIPTION_REGEX = /^[a-zA-Z0-9 ]{1,30}$/
+
 const Navbar = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const transactionState = useSelector((state) => state.addTransaction)
@@ -14,6 +16,31 @@ const Navbar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    let isValid = true
+
+    for (const obj in transactionState) {
+      const EXCEPTION = ['error', 'modalValue']
+      if (EXCEPTION.includes(obj)) continue
+
+      if (!transactionState[obj]) {
+        isValid = false
+        dispatch(
+          addTransactionAction.setError({
+            field: `${obj}`,
+            value: true,
+          })
+        )
+      } else {
+        dispatch(
+          addTransactionAction.setError({
+            field: `${obj}`,
+            value: false,
+          })
+        )
+      }
+    }
+
     console.log(transactionState)
   }
 

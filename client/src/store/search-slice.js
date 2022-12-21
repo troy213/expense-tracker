@@ -5,7 +5,7 @@ const searchSlice = createSlice({
   initialState: {
     description: '',
     error: {
-      description: '',
+      description: false,
     },
     modalValue: '',
   },

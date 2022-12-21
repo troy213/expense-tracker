@@ -9,6 +9,7 @@ const Login = () => {
 
   const handleLoginGuest = () => {
     setAuth({ id: 'guest', username: 'guest', email: null, accessToken: null })
+    localStorage.setItem('isGuest', true)
     navigate('/')
   }
 

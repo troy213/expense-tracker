@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { searchAction } from '../../store/search-slice'
 
@@ -13,7 +13,18 @@ const Dashboard = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const searchState = useSelector((state) => state.search)
   const dispatch = useDispatch()
-  const { auth } = useAuth()
+  const { auth, setAuth } = useAuth()
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem('isGuest'))) {
+      setAuth({
+        id: 'guest',
+        username: 'guest',
+        email: null,
+        accessToken: null,
+      })
+    }
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()

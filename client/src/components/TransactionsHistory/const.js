@@ -21,35 +21,36 @@ export const EDIT_TRANSACTION_FORM = [
   {
     id: 'category',
     label: 'Category',
-    type: 'dropdown',
+    type: 'conditional-dropdown',
+    dependency: 'type',
     options: [
       {
         value: 'Education',
-        category: 'outcome',
+        type: 'Outcome',
       },
       {
         value: 'Transportation',
-        category: 'outcome',
+        type: 'Outcome',
       },
       {
         value: 'Food & Beverages',
-        category: 'outcome',
+        type: 'Outcome',
       },
       {
         value: 'Entertainment',
-        category: 'outcome',
+        type: 'Outcome',
       },
       {
         value: 'Charity',
-        category: 'outcome',
+        type: 'Outcome',
       },
       {
         value: 'Salary',
-        category: 'income',
+        type: 'Income',
       },
       {
         value: 'Bonus',
-        category: 'income',
+        type: 'Income',
       },
     ],
   },
