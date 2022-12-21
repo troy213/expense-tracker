@@ -56,7 +56,10 @@ const Dashboard = () => {
           Hi,{' '}
           <span className='text--bold text--capitalize'>{auth?.username}</span>
         </p>
-        <button className='btn btn-link' onClick={() => setModalIsOpen(true)}>
+        <button
+          className='dashboard__header-btn btn btn-link'
+          onClick={() => setModalIsOpen(true)}
+        >
           <SearchIcon />
         </button>
       </div>

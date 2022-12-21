@@ -1,3 +1,5 @@
+import { getCurrencyRegex, getMaxLengthRegex } from '../../utils/validator'
+
 export const ADD_TRANSACTION_FORM = [
   {
     id: 'date',
@@ -59,11 +61,13 @@ export const ADD_TRANSACTION_FORM = [
     label: 'Description',
     type: 'text',
     placeholder: 'description',
+    validation: getMaxLengthRegex(30),
   },
   {
     id: 'amount',
     label: 'Amount (Rp)',
-    type: 'number',
+    type: 'text',
     placeholder: '100.000,00',
+    validation: getCurrencyRegex(12),
   },
 ]

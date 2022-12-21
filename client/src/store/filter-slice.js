@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    from: '',
-    to: '',
+    from: new Date().toISOString(),
+    to: new Date().toISOString(),
     error: {
       from: false,
       to: false,
@@ -27,6 +27,13 @@ const filterSlice = createSlice({
         if (EXCEPTION.includes(stateObj)) continue
 
         state[stateObj] = ''
+      }
+
+      state.from = new Date().toISOString()
+      state.to = new Date().toISOString()
+
+      for (const stateObj in state.error) {
+        state.error[stateObj] = false
       }
     },
   },

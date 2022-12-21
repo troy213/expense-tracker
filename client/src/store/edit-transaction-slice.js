@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const editTransactionSlice = createSlice({
   name: 'editTransaction',
   initialState: {
-    date: '',
+    date: new Date().toISOString(),
     type: '',
     category: '',
     description: '',
@@ -32,6 +32,12 @@ const editTransactionSlice = createSlice({
         if (EXCEPTION.includes(stateObj)) continue
 
         state[stateObj] = ''
+      }
+
+      state.date = new Date().toISOString()
+
+      for (const stateObj in state.error) {
+        state.error[stateObj] = false
       }
     },
   },

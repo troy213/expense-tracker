@@ -12,6 +12,7 @@ const addTransactionSlice = createSlice({
       date: false,
       type: false,
       category: false,
+      description: false,
       amount: false,
     },
     modalValue: '',
@@ -33,7 +34,12 @@ const addTransactionSlice = createSlice({
 
         state[stateObj] = ''
       }
+
       state.date = new Date().toISOString()
+
+      for (const stateObj in state.error) {
+        state.error[stateObj] = false
+      }
     },
   },
 })

@@ -28,6 +28,10 @@ const categorySlice = createSlice({
 
         state[stateObj] = ''
       }
+
+      for (const stateObj in state.error) {
+        state.error[stateObj] = false
+      }
     },
   },
 })

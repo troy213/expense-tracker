@@ -14,8 +14,15 @@ const Form = (props) => {
   } = props
   const dispatch = useDispatch()
 
-  const handleChange = (field, value) => {
-    dispatch(action.setInputField({ field, value }))
+  const handleChange = (field, value, validation = '') => {
+    console.log(validation)
+    if (validation) {
+      if (validation.test(value)) {
+        dispatch(action.setInputField({ field, value }))
+      }
+    } else {
+      dispatch(action.setInputField({ field, value }))
+    }
   }
 
   const handleChangeDependency = (schema, field, value) => {
@@ -29,7 +36,14 @@ const Form = (props) => {
   return (
     <form className='form' onSubmit={onSubmit}>
       {schema.map((field, fieldIndex) => {
-        const { id, label, type, placeholder = '' } = field
+        const {
+          id,
+          label,
+          type,
+          placeholder = '',
+          validation = '',
+          helperText = "This field can't be empty",
+        } = field
 
         return (
           <div key={fieldIndex} className='form__input-wrapper'>
@@ -42,9 +56,12 @@ const Form = (props) => {
                 id={id}
                 selected={state[id] && new Date(state[id])}
                 onChange={(date) => handleChange(id, date.toISOString())}
-                className={`form__input`}
+                className={`form__input${
+                  state.error[id] ? ' form__input--error' : ''
+                }`}
                 placeholderText={placeholder}
                 dateFormat='dd/MM/yyyy'
+                maxDate={new Date()}
               />
             ) : null}
 
@@ -55,7 +72,9 @@ const Form = (props) => {
                   handleChangeDependency(schema, id, e.target.value)
                 }
                 value={state[id]}
-                className={`form__input`}
+                className={`form__input${
+                  state.error[id] ? ' form__input--error' : ''
+                }`}
               >
                 <option value=''>- select -</option>
                 {field.options.map((option, index) => {
@@ -73,7 +92,9 @@ const Form = (props) => {
                 id={id}
                 onChange={(e) => handleChange(id, e.target.value)}
                 value={state[id]}
-                className={`form__input`}
+                className={`form__input${
+                  state.error[id] ? ' form__input--error' : ''
+                }`}
                 disabled={!state[field.dependency] ? true : false}
               >
                 <option value=''>- select -</option>
@@ -93,8 +114,10 @@ const Form = (props) => {
                 type='text'
                 id={id}
                 value={state[id]}
-                onChange={(e) => handleChange(id, e.target.value)}
-                className={`form__input`}
+                onChange={(e) => handleChange(id, e.target.value, validation)}
+                className={`form__input${
+                  state.error[id] ? ' form__input--error' : ''
+                }`}
                 placeholder={placeholder}
               />
             ) : null}
@@ -104,17 +127,27 @@ const Form = (props) => {
                 type='number'
                 id={id}
                 value={state[id]}
-                onChange={(e) => handleChange(id, e.target.value)}
-                className={`form__input`}
+                onChange={(e) => handleChange(id, e.target.value, validation)}
+                className={`form__input${
+                  state.error[id] ? ' form__input--error' : ''
+                }`}
                 placeholder={placeholder}
               />
+            ) : null}
+
+            {state.error[id] ? (
+              <p className='text--light text--3 text--danger mt-2'>
+                {helperText}
+              </p>
             ) : null}
           </div>
         )
       })}
+
       <button type='submit' className='btn btn-lg btn-primary mt-4'>
         {submitLabel}
       </button>
+
       {isCancelable ? (
         <button className='btn btn-lg btn-primary-outline' onClick={onCancel}>
           Cancel

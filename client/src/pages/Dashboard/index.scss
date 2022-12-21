@@ -9,6 +9,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &-btn {
+      padding: 0.5rem 0;
+    }
   }
 
   &__widget-container {
