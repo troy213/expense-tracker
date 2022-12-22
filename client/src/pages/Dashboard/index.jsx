@@ -7,9 +7,12 @@ import { TransactionHistory, Form, Modal, Spinner } from '../../components'
 import { SearchIcon } from '../../assets/icons'
 import { SEARCH_FORM } from './const'
 import useAuth from '../../hooks/useAuth'
-import { formatCurrency } from '../../utils'
+import { formatCurrency, getSearchData } from '../../utils'
 
 const Dashboard = () => {
+  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
+  const localStorageData = JSON.parse(localStorage.getItem('transactionsData'))
+
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [totalIncome, setTotalIncome] = useState(0)
   const [totalOutcome, setTotalOutcome] = useState(0)
@@ -21,11 +24,6 @@ const Dashboard = () => {
   const { auth, setAuth } = useAuth()
 
   useEffect(() => {
-    const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-    const localStorageData = JSON.parse(
-      localStorage.getItem('transactionsData')
-    )
-
     if (isGuest) {
       setAuth({
         id: 'guest',
@@ -66,7 +64,11 @@ const Dashboard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(searchState)
+    dispatch(
+      transactionsDataAction.setTransactionsData({
+        value: getSearchData(searchState.description, localStorageData),
+      })
+    )
   }
 
   const handleCancel = () => {

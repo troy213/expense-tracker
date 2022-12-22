@@ -1,3 +1,4 @@
+import Chart from './Chart'
 import Form from './Form'
 import Layout from './Layout'
 import Modal from './Modal'
@@ -7,6 +8,7 @@ import Spinner from './Spinner'
 import TransactionHistory from './TransactionsHistory'
 
 export {
+  Chart,
   Form,
   Layout,
   Modal,

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { addTransactionAction } from '../../store/add-transaction-slice'
@@ -13,6 +13,7 @@ const Navbar = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const transactionState = useSelector((state) => state.addTransaction)
   const { transactionsData } = useSelector((state) => state.transactionsData)
+  const location = useLocation()
   const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
@@ -69,6 +70,10 @@ const Navbar = () => {
       dispatch(transactionsDataAction.setTransactionsData({ value: data }))
       handleCancel()
     }
+
+    if (location.pathname === '/reports') {
+      window.location.reload()
+    }
   }
 
   const handleCancel = () => {
@@ -92,7 +97,12 @@ const Navbar = () => {
         </div>
       </Modal>
 
-      <Link to='/reports' className='navbar__button'>
+      <Link
+        to='/reports'
+        className={`navbar__button${
+          location.pathname === '/reports' ? ' active' : ''
+        }`}
+      >
         <ReportsIcon />
       </Link>
       <button
@@ -101,7 +111,12 @@ const Navbar = () => {
       >
         <AddIcon />
       </button>
-      <Link to='/settings' className='navbar__button'>
+      <Link
+        to='/settings'
+        className={`navbar__button${
+          location.pathname === '/settings' ? ' active' : ''
+        }`}
+      >
         <UserIcon />
       </Link>
     </div>

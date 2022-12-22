@@ -42,6 +42,8 @@ const Form = (props) => {
           placeholder = '',
           validation = '',
           helperText = "This field can't be empty",
+          dateFormat = 'dd/MM/yyyy',
+          isMonthPicker = false,
         } = field
 
         return (
@@ -59,8 +61,9 @@ const Form = (props) => {
                   state.error[id] ? ' form__input--error' : ''
                 }`}
                 placeholderText={placeholder}
-                dateFormat='dd/MM/yyyy'
+                dateFormat={dateFormat}
                 maxDate={new Date()}
+                showMonthYearPicker={isMonthPicker}
               />
             ) : null}
 

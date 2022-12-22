@@ -2,30 +2,41 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { filterAction } from '../../store/filter-slice'
-import {
-  ResponsiveContainer,
-  LineChart,
-  Legend,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-} from 'recharts'
 
-import { Form, Modal, Spinner } from '../../components'
+import { Chart, Form, Modal, Spinner } from '../../components'
 import { ChevronLeftIcon, FilterIcon } from '../../assets/icons'
-import { FILTER_FORM } from './const'
+import { FILTER_FORM, CHART_DATA_KEY, MONTHS } from './const'
 import { formatCurrency } from '../../utils'
-import { getReportData, getChartData } from '../../utils'
+import { getReportData, getChartData, getFilterData } from '../../utils'
+
+const getFirstAndLastDate = (input) => {
+  const fromDate = new Date(input.from)
+  const toDate = new Date(input.to)
+
+  const from = new Date(
+    fromDate.getFullYear(),
+    fromDate.getMonth(),
+    1
+  ).toISOString()
+  const to = new Date(
+    toDate.getFullYear(),
+    toDate.getMonth() + 1,
+    0
+  ).toISOString()
+
+  return { from, to }
+}
 
 const Reports = () => {
   const isGuest = JSON.parse(localStorage.getItem('isGuest'))
   const transactionsData = JSON.parse(localStorage.getItem('transactionsData'))
 
-  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [reportData, setReportData] = useState([])
   const [chartData, setChartData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [filterDate, setFilterDate] = useState(null)
+
   const filterState = useSelector((state) => state.filter)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -44,36 +55,21 @@ const Reports = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(filterState)
+    const date = getFirstAndLastDate({
+      from: filterState.from,
+      to: filterState.to,
+    })
+
+    setFilterDate(date)
+    setReportData(getReportData(getFilterData(transactionsData, date)))
+    setChartData(getChartData(getFilterData(transactionsData, date)))
+    handleCancel()
   }
 
   const handleCancel = () => {
     dispatch(filterAction.clearForm())
     setModalIsOpen(false)
   }
-
-  const renderLineChart = (
-    <ResponsiveContainer width='100%' height='100%'>
-      <LineChart
-        width={500}
-        height={300}
-        data={chartData}
-        margin={{
-          top: 5,
-          right: 32,
-          left: 16,
-          bottom: 5,
-        }}
-      >
-        <Line type='monotone' dataKey='income' stroke='#768c18' />
-        <Line type='monotone' dataKey='outcome' stroke='#d95445' />
-        <CartesianGrid stroke='#ccc' />
-        <Legend />
-        <XAxis dataKey='name' />
-        <YAxis />
-      </LineChart>
-    </ResponsiveContainer>
-  )
 
   if (isLoading)
     return (
@@ -107,9 +103,19 @@ const Reports = () => {
           <FilterIcon />
         </button>
       </div>
-      <p className='text--light text--3'>1 January 2022 - 31 March 2022</p>
+      <p className='text--light text--3'>
+        {filterDate
+          ? `${MONTHS[new Date(filterDate.from).getMonth()]} ${new Date(
+              filterDate.from
+            ).getFullYear()} - ${
+              MONTHS[new Date(filterDate.to).getMonth()]
+            } ${new Date(filterDate.to).getFullYear()}`
+          : ''}
+      </p>
       {transactionsData ? (
-        <div className='reports__chart-container'>{renderLineChart}</div>
+        <div className='reports__chart-container'>
+          <Chart chartData={chartData} dataKey={CHART_DATA_KEY} />
+        </div>
       ) : null}
 
       {reportData.length ? (

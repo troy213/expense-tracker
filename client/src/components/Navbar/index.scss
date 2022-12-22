@@ -15,13 +15,21 @@
   }
 
   &__button {
+    display: flex;
     border: none;
+    border-radius: 0.5rem;
+    align-items: center;
+    padding: 0.5rem;
 
     &-main {
       border-radius: 50%;
       background-color: $primary-color;
       display: flex;
       padding: 0.5rem;
+    }
+
+    &.active {
+      background-color: rgba($color: $primary-color-light, $alpha: 0.5);
     }
   }
 }
