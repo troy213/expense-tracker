@@ -69,6 +69,7 @@ const Dashboard = () => {
         value: getSearchData(searchState.description, localStorageData),
       })
     )
+    handleCancel()
   }
 
   const handleCancel = () => {

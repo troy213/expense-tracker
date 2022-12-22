@@ -47,11 +47,19 @@ export const ADD_TRANSACTION_FORM = [
         type: 'Outcome',
       },
       {
+        value: 'Other',
+        type: 'Outcome',
+      },
+      {
         value: 'Salary',
         type: 'Income',
       },
       {
         value: 'Bonus',
+        type: 'Income',
+      },
+      {
+        value: 'Other',
         type: 'Income',
       },
     ],

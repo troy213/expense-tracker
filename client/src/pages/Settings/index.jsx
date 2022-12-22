@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { categoryAction } from '../../store/category-slice'
 
+import useAuth from '../../hooks/useAuth'
 import { Modal, Form } from '../../components'
 import {
   ChevronLeftIcon,
@@ -17,6 +18,7 @@ import { ADD_CATEGORY_FORM } from './const'
 const Settings = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const categoryState = useSelector((state) => state.category)
+  const { auth } = useAuth()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -55,7 +57,8 @@ const Settings = () => {
         </button>
       </div>
       <p className='text--light'>
-        Hi, <span className='text--bold'>User</span>
+        Hi,{' '}
+        <span className='text--bold text--capitalize'>{auth?.username}</span>
       </p>
       <Link to='/account' className='settings__link'>
         <UserIcon />

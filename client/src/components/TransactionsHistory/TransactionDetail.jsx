@@ -10,26 +10,100 @@ import { formatCurrency } from '../../utils'
 const TransactionDetail = (props) => {
   const { id, type, category, description, amount } = props.transactionDetail
 
+  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
   const localStorageData = JSON.parse(localStorage.getItem('transactionsData'))
 
   const [isActive, setIsActive] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
   const editTransactionState = useSelector((state) => state.editTransaction)
+  const { transactionsData } = useSelector((state) => state.transactionsData)
   const dispatch = useDispatch()
 
   const handleCollapse = () => {
     setIsActive(!isActive)
   }
 
-  const handleModal = (content) => {
+  const handleModal = (content, id) => {
+    if (content === 'editModal') {
+      const data = localStorageData.find((value) => value.id === id)
+      for (const field in data) {
+        const EXCEPTION = ['id']
+        if (EXCEPTION.includes(field)) continue
+
+        dispatch(
+          editTransactionAction.setInputField({ field, value: data[field] })
+        )
+      }
+    }
+
     setModalContent(content)
     setModalIsOpen(true)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, id) => {
     e.preventDefault()
-    console.log(editTransactionState)
+    let isValid = true
+
+    for (const obj in editTransactionState) {
+      const EXCEPTION = ['error', 'description', 'modalValue']
+      if (EXCEPTION.includes(obj)) continue
+
+      if (!editTransactionState[obj]) {
+        isValid = false
+        dispatch(
+          editTransactionAction.setError({
+            field: `${obj}`,
+            value: true,
+          })
+        )
+      } else {
+        dispatch(
+          editTransactionAction.setError({
+            field: `${obj}`,
+            value: false,
+          })
+        )
+      }
+    }
+
+    if (!isValid) return
+
+    if (isGuest) {
+      let data = []
+      const updatedData = {
+        id,
+        date: editTransactionState.date,
+        type: editTransactionState.type,
+        category: editTransactionState.category,
+        description: editTransactionState.description,
+        amount: parseInt(editTransactionState.amount),
+      }
+
+      if (localStorageData) {
+        const index = localStorageData.findIndex(
+          (transaction) => transaction.id === id
+        )
+        data = [
+          ...localStorageData.slice(0, index),
+          updatedData,
+          ...localStorageData.slice(index + 1),
+        ]
+      } else {
+        const index = transactionsData.findIndex(
+          (transaction) => transaction.id === id
+        )
+        data = [
+          ...transactionsData.slice(0, index),
+          updatedData,
+          ...transactionsData.slice(index + 1),
+        ]
+      }
+
+      localStorage.setItem('transactionsData', JSON.stringify(data))
+      dispatch(transactionsDataAction.setTransactionsData({ value: data }))
+      handleCancel()
+    }
   }
 
   const handleCancel = () => {
@@ -54,7 +128,7 @@ const TransactionDetail = (props) => {
           schema={EDIT_TRANSACTION_FORM}
           state={editTransactionState}
           action={editTransactionAction}
-          onSubmit={handleSubmit}
+          onSubmit={(e) => handleSubmit(e, id)}
           onCancel={handleCancel}
           submitLabel='Update'
         />
@@ -106,13 +180,13 @@ const TransactionDetail = (props) => {
         >
           <button
             className='btn btn-primary text--light'
-            onClick={() => handleModal('editModal')}
+            onClick={() => handleModal('editModal', id)}
           >
             Edit
           </button>
           <button
             className='btn btn-danger text--light'
-            onClick={() => handleModal('deleteModal')}
+            onClick={() => handleModal('deleteModal', id)}
           >
             Delete
           </button>
