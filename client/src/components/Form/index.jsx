@@ -6,6 +6,7 @@ const Form = (props) => {
   const {
     schema,
     state,
+    dependecyState,
     action,
     onSubmit,
     onCancel,
@@ -100,7 +101,7 @@ const Form = (props) => {
                 disabled={!state[field.dependency] ? true : false}
               >
                 <option value=''>- select -</option>
-                {field.options.map((option, index) => {
+                {dependecyState[field.options].map((option, index) => {
                   if (option[field.dependency] === state[field.dependency])
                     return (
                       <option value={option.value} key={index}>

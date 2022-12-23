@@ -11,7 +11,9 @@ import { formatCurrency, getSearchData } from '../../utils'
 
 const Dashboard = () => {
   const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageData = JSON.parse(localStorage.getItem('transactionsData'))
+  const localStorageTransactionsData = JSON.parse(
+    localStorage.getItem('transactionsData')
+  )
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [totalIncome, setTotalIncome] = useState(0)
@@ -32,10 +34,10 @@ const Dashboard = () => {
         accessToken: null,
       })
 
-      if (localStorageData) {
+      if (localStorageTransactionsData) {
         dispatch(
           transactionsDataAction.setTransactionsData({
-            value: localStorageData,
+            value: localStorageTransactionsData,
           })
         )
       }
@@ -64,9 +66,14 @@ const Dashboard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!localStorageTransactionsData) return handleCancel()
+
     dispatch(
       transactionsDataAction.setTransactionsData({
-        value: getSearchData(searchState.description, localStorageData),
+        value: getSearchData(
+          searchState.description,
+          localStorageTransactionsData
+        ),
       })
     )
     handleCancel()

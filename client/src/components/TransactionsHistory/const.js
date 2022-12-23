@@ -1,3 +1,5 @@
+import { getCurrencyRegex, getMaxLengthRegex } from '../../utils/validator'
+
 export const EDIT_TRANSACTION_FORM = [
   {
     id: 'date',
@@ -23,47 +25,20 @@ export const EDIT_TRANSACTION_FORM = [
     label: 'Category',
     type: 'conditional-dropdown',
     dependency: 'type',
-    options: [
-      {
-        value: 'Education',
-        type: 'Outcome',
-      },
-      {
-        value: 'Transportation',
-        type: 'Outcome',
-      },
-      {
-        value: 'Food & Beverages',
-        type: 'Outcome',
-      },
-      {
-        value: 'Entertainment',
-        type: 'Outcome',
-      },
-      {
-        value: 'Charity',
-        type: 'Outcome',
-      },
-      {
-        value: 'Salary',
-        type: 'Income',
-      },
-      {
-        value: 'Bonus',
-        type: 'Income',
-      },
-    ],
+    options: 'categoryData',
   },
   {
     id: 'description',
     label: 'Description',
     type: 'text',
     placeholder: 'description',
+    validation: getMaxLengthRegex(30),
   },
   {
     id: 'amount',
     label: 'Amount (Rp)',
-    type: 'number',
+    type: 'text',
     placeholder: '100.000,00',
+    validation: getCurrencyRegex(12),
   },
 ]

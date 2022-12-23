@@ -29,7 +29,9 @@ const getFirstAndLastDate = (input) => {
 
 const Reports = () => {
   const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const transactionsData = JSON.parse(localStorage.getItem('transactionsData'))
+  const localStorageTransactionsData = JSON.parse(
+    localStorage.getItem('transactionsData')
+  )
 
   const [reportData, setReportData] = useState([])
   const [chartData, setChartData] = useState([])
@@ -44,9 +46,9 @@ const Reports = () => {
   useEffect(() => {
     if (!isGuest) return
 
-    if (transactionsData && transactionsData.length) {
-      setReportData(getReportData(transactionsData))
-      setChartData(getChartData(transactionsData))
+    if (localStorageTransactionsData && localStorageTransactionsData.length) {
+      setReportData(getReportData(localStorageTransactionsData))
+      setChartData(getChartData(localStorageTransactionsData))
     }
     setIsLoading(false)
   }, [])
@@ -55,14 +57,20 @@ const Reports = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!localStorageTransactionsData) return handleCancel()
+
     const date = getFirstAndLastDate({
       from: filterState.from,
       to: filterState.to,
     })
 
     setFilterDate(date)
-    setReportData(getReportData(getFilterData(transactionsData, date)))
-    setChartData(getChartData(getFilterData(transactionsData, date)))
+    setReportData(
+      getReportData(getFilterData(localStorageTransactionsData, date))
+    )
+    setChartData(
+      getChartData(getFilterData(localStorageTransactionsData, date))
+    )
     handleCancel()
   }
 
@@ -112,7 +120,7 @@ const Reports = () => {
             } ${new Date(filterDate.to).getFullYear()}`
           : ''}
       </p>
-      {transactionsData ? (
+      {localStorageTransactionsData.length ? (
         <div className='reports__chart-container'>
           <Chart chartData={chartData} dataKey={CHART_DATA_KEY} />
         </div>

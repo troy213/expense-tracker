@@ -2,6 +2,8 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components'
 import {
+  AccountSettings,
+  EditCategory,
   Login,
   Register,
   Unauthorized,
@@ -9,7 +11,6 @@ import {
   NotFound,
   Settings,
   Reports,
-  AccountSettings,
 } from './pages'
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
       <Route path='/' element={<Layout />}>
         <Route path='/' element={<Dashboard />} />
         <Route path='account' element={<AccountSettings />} />
+        <Route path='edit-category' element={<EditCategory />} />
         <Route path='reports' element={<Reports />} />
         <Route path='settings' element={<Settings />} />
       </Route>

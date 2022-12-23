@@ -10,6 +10,14 @@ import { ADD_TRANSACTION_FORM } from './const'
 import { transactionsDataAction } from '../../store/transaction-data-slice'
 
 const Navbar = () => {
+  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
+  const localStorageCategoryData = JSON.parse(
+    localStorage.getItem('categoryData')
+  )
+  const localStorageTransactionsData = JSON.parse(
+    localStorage.getItem('transactionsData')
+  )
+
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const transactionState = useSelector((state) => state.addTransaction)
   const { transactionsData } = useSelector((state) => state.transactionsData)
@@ -20,10 +28,6 @@ const Navbar = () => {
     e.preventDefault()
 
     let isValid = true
-    const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-    const localStorageData = JSON.parse(
-      localStorage.getItem('transactionsData')
-    )
 
     for (const obj in transactionState) {
       const EXCEPTION = ['error', 'description', 'modalValue']
@@ -60,8 +64,8 @@ const Navbar = () => {
         amount: parseInt(transactionState.amount),
       }
 
-      if (localStorageData) {
-        data = [...localStorageData, newData]
+      if (localStorageTransactionsData) {
+        data = [...localStorageTransactionsData, newData]
       } else {
         data = [...transactionsData, newData]
       }
@@ -89,6 +93,9 @@ const Navbar = () => {
           <Form
             schema={ADD_TRANSACTION_FORM}
             state={transactionState}
+            dependecyState={{
+              categoryData: localStorageCategoryData,
+            }}
             action={addTransactionAction}
             onSubmit={handleSubmit}
             onCancel={handleCancel}

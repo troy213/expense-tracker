@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const categorySlice = createSlice({
-  name: 'category',
+const addCategorySlice = createSlice({
+  name: 'addCategory',
   initialState: {
     type: '',
-    category: '',
+    value: '',
     error: {
       type: false,
-      category: false,
+      value: false,
     },
     modalValue: '',
   },
@@ -36,6 +36,6 @@ const categorySlice = createSlice({
   },
 })
 
-export const categoryAction = categorySlice.actions
+export const addCategoryAction = addCategorySlice.actions
 
-export default categorySlice
+export default addCategorySlice

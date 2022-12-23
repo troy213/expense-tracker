@@ -11,7 +11,12 @@ const TransactionDetail = (props) => {
   const { id, type, category, description, amount } = props.transactionDetail
 
   const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageData = JSON.parse(localStorage.getItem('transactionsData'))
+  const localStorageTransactionsData = JSON.parse(
+    localStorage.getItem('transactionsData')
+  )
+  const localStorageCategoryData = JSON.parse(
+    localStorage.getItem('categoryData')
+  )
 
   const [isActive, setIsActive] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -26,7 +31,7 @@ const TransactionDetail = (props) => {
 
   const handleModal = (content, id) => {
     if (content === 'editModal') {
-      const data = localStorageData.find((value) => value.id === id)
+      const data = localStorageTransactionsData.find((value) => value.id === id)
       for (const field in data) {
         const EXCEPTION = ['id']
         if (EXCEPTION.includes(field)) continue
@@ -80,14 +85,14 @@ const TransactionDetail = (props) => {
         amount: parseInt(editTransactionState.amount),
       }
 
-      if (localStorageData) {
-        const index = localStorageData.findIndex(
+      if (localStorageTransactionsData) {
+        const index = localStorageTransactionsData.findIndex(
           (transaction) => transaction.id === id
         )
         data = [
-          ...localStorageData.slice(0, index),
+          ...localStorageTransactionsData.slice(0, index),
           updatedData,
-          ...localStorageData.slice(index + 1),
+          ...localStorageTransactionsData.slice(index + 1),
         ]
       } else {
         const index = transactionsData.findIndex(
@@ -112,7 +117,7 @@ const TransactionDetail = (props) => {
   }
 
   const handleDelete = (id) => {
-    const newData = localStorageData.filter(
+    const newData = localStorageTransactionsData.filter(
       (transaction) => transaction.id !== id
     )
     localStorage.setItem('transactionsData', JSON.stringify(newData))
@@ -127,6 +132,7 @@ const TransactionDetail = (props) => {
         <Form
           schema={EDIT_TRANSACTION_FORM}
           state={editTransactionState}
+          dependecyState={{ categoryData: localStorageCategoryData }}
           action={editTransactionAction}
           onSubmit={(e) => handleSubmit(e, id)}
           onCancel={handleCancel}
