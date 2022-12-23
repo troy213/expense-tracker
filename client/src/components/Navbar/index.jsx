@@ -3,11 +3,12 @@ import { Link, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { addTransactionAction } from '../../store/add-transaction-slice'
+import { transactionsDataAction } from '../../store/transaction-data-slice'
 
 import { Modal, Form } from '../'
 import { ReportsIcon, AddIcon, UserIcon } from '../../assets/icons'
 import { ADD_TRANSACTION_FORM } from './const'
-import { transactionsDataAction } from '../../store/transaction-data-slice'
+import { checkEmptyField } from '../../utils'
 
 const Navbar = () => {
   const isGuest = JSON.parse(localStorage.getItem('isGuest'))
@@ -19,7 +20,7 @@ const Navbar = () => {
   )
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const transactionState = useSelector((state) => state.addTransaction)
+  const addTransactionState = useSelector((state) => state.addTransaction)
   const { transactionsData } = useSelector((state) => state.transactionsData)
   const location = useLocation()
   const dispatch = useDispatch()
@@ -27,29 +28,14 @@ const Navbar = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    let isValid = true
+    let isValid = checkEmptyField(
+      addTransactionState,
+      addTransactionAction,
+      dispatch,
+      ['error', 'description']
+    )
 
-    for (const obj in transactionState) {
-      const EXCEPTION = ['error', 'description', 'modalValue']
-      if (EXCEPTION.includes(obj)) continue
-
-      if (!transactionState[obj]) {
-        isValid = false
-        dispatch(
-          addTransactionAction.setError({
-            field: `${obj}`,
-            value: true,
-          })
-        )
-      } else {
-        dispatch(
-          addTransactionAction.setError({
-            field: `${obj}`,
-            value: false,
-          })
-        )
-      }
-    }
+    console.log(isValid)
 
     if (!isValid) return
 
@@ -57,11 +43,11 @@ const Navbar = () => {
       let data = []
       const newData = {
         id: uuidv4(),
-        date: transactionState.date,
-        type: transactionState.type,
-        category: transactionState.category,
-        description: transactionState.description,
-        amount: parseInt(transactionState.amount),
+        date: addTransactionState.date,
+        type: addTransactionState.type,
+        category: addTransactionState.category,
+        description: addTransactionState.description,
+        amount: parseInt(addTransactionState.amount),
       }
 
       if (localStorageTransactionsData) {
@@ -92,7 +78,7 @@ const Navbar = () => {
           <p className='text--bold'>Add Transaction</p>
           <Form
             schema={ADD_TRANSACTION_FORM}
-            state={transactionState}
+            state={addTransactionState}
             dependecyState={{
               categoryData: localStorageCategoryData,
             }}

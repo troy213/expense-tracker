@@ -8,7 +8,7 @@ import { categoryDataAction } from '../../store/category-data-slice'
 import { Form, Modal, Spinner } from '../../components'
 import EditCategoryDetail from './EditCategoryDetail'
 import { ChevronLeftIcon } from '../../assets/icons'
-import { getGroupedCategory } from '../../utils'
+import { getGroupedCategory, checkEmptyField } from '../../utils'
 import { ADD_CATEGORY_FORM } from './const'
 
 const EditCategory = () => {
@@ -40,7 +40,6 @@ const EditCategory = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    let isValid = true
     const isExist = localStorageCategoryData.find(
       (item) =>
         item.type === addCategoryState.type &&
@@ -49,27 +48,12 @@ const EditCategory = () => {
 
     if (isExist) return cogoToast.error('Category is already exist')
 
-    for (const obj in addCategoryState) {
-      const EXCEPTION = ['error', 'modalValue']
-      if (EXCEPTION.includes(obj)) continue
-
-      if (!addCategoryState[obj]) {
-        isValid = false
-        dispatch(
-          addCategoryAction.setError({
-            field: `${obj}`,
-            value: true,
-          })
-        )
-      } else {
-        dispatch(
-          addCategoryAction.setError({
-            field: `${obj}`,
-            value: false,
-          })
-        )
-      }
-    }
+    const isValid = checkEmptyField(
+      addCategoryState,
+      addCategoryAction,
+      dispatch,
+      ['error']
+    )
 
     if (!isValid) return
 

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 
 import { expenseTracker } from '../../assets/images'
+import { CATEGORY_DATA } from '../../data/categoryData'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -10,6 +11,8 @@ const Login = () => {
   const handleLoginGuest = () => {
     setAuth({ id: 'guest', username: 'guest', email: null, accessToken: null })
     localStorage.setItem('isGuest', true)
+    localStorage.setItem('transactionsData', JSON.stringify([]))
+    localStorage.setItem('categoryData', JSON.stringify(CATEGORY_DATA))
     navigate('/')
   }
 

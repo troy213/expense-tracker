@@ -5,7 +5,7 @@ import { transactionsDataAction } from '../../store/transaction-data-slice'
 
 import { Form, Modal } from '../'
 import { EDIT_TRANSACTION_FORM } from './const'
-import { formatCurrency } from '../../utils'
+import { formatCurrency, checkEmptyField } from '../../utils'
 
 const TransactionDetail = (props) => {
   const { id, type, category, description, amount } = props.transactionDetail
@@ -48,29 +48,12 @@ const TransactionDetail = (props) => {
 
   const handleSubmit = (e, id) => {
     e.preventDefault()
-    let isValid = true
-
-    for (const obj in editTransactionState) {
-      const EXCEPTION = ['error', 'description', 'modalValue']
-      if (EXCEPTION.includes(obj)) continue
-
-      if (!editTransactionState[obj]) {
-        isValid = false
-        dispatch(
-          editTransactionAction.setError({
-            field: `${obj}`,
-            value: true,
-          })
-        )
-      } else {
-        dispatch(
-          editTransactionAction.setError({
-            field: `${obj}`,
-            value: false,
-          })
-        )
-      }
-    }
+    const isValid = checkEmptyField(
+      editTransactionState,
+      editTransactionAction,
+      dispatch,
+      ['error', 'description']
+    )
 
     if (!isValid) return
 

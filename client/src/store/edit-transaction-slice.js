@@ -14,7 +14,6 @@ const editTransactionSlice = createSlice({
       category: false,
       amount: false,
     },
-    modalValue: '',
   },
   reducers: {
     setInputField(state, action) {
@@ -22,9 +21,6 @@ const editTransactionSlice = createSlice({
     },
     setError(state, action) {
       state.error[action.payload.field] = action.payload.value
-    },
-    setModalValue(state, action) {
-      state.modalValue = action.payload
     },
     clearForm(state) {
       for (const stateObj in state) {

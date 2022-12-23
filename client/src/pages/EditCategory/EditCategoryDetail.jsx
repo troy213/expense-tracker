@@ -5,6 +5,7 @@ import { categoryDataAction } from '../../store/category-data-slice'
 
 import { Form, Modal } from '../../components'
 import { EDIT_CATEGORY_FORM } from './const'
+import { checkEmptyField } from '../../utils'
 
 const EditCategoryDetail = (props) => {
   const { item } = props
@@ -39,29 +40,12 @@ const EditCategoryDetail = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    let isValid = true
-
-    for (const obj in editCategoryState) {
-      const EXCEPTION = ['error', 'description', 'modalValue']
-      if (EXCEPTION.includes(obj)) continue
-
-      if (!editCategoryState[obj]) {
-        isValid = false
-        dispatch(
-          editCategoryAction.setError({
-            field: `${obj}`,
-            value: true,
-          })
-        )
-      } else {
-        dispatch(
-          editCategoryAction.setError({
-            field: `${obj}`,
-            value: false,
-          })
-        )
-      }
-    }
+    const isValid = checkEmptyField(
+      editCategoryState,
+      editCategoryAction,
+      dispatch,
+      ['error']
+    )
 
     if (!isValid) return
 
