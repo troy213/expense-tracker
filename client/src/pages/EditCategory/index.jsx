@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import cogoToast from 'cogo-toast'
@@ -10,37 +10,25 @@ import EditCategoryDetail from './EditCategoryDetail'
 import { ChevronLeftIcon } from '../../assets/icons'
 import { getGroupedCategory, checkEmptyField } from '../../utils'
 import { ADD_CATEGORY_FORM } from './const'
+import useAuth from '../../hooks/useAuth'
+import useStorage from '../../hooks/useStorage'
 
 const EditCategory = () => {
-  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageCategoryData = JSON.parse(
-    localStorage.getItem('categoryData')
-  )
-
-  const [isLoading, setIsLoading] = useState(true)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const addCategoryState = useSelector((state) => state.addCategory)
   const { categoryData } = useSelector((state) => state.categoryData)
+  const { auth } = useAuth()
+  const { setStorageCategoryData } = useStorage()
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (isGuest && localStorageCategoryData) {
-      dispatch(
-        categoryDataAction.setCategoryData({ value: localStorageCategoryData })
-      )
-    }
-
-    setIsLoading(false)
-  }, [])
 
   const goBack = () => navigate('/settings')
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const isExist = localStorageCategoryData.find(
+    const isExist = categoryData.find(
       (item) =>
         item.type === addCategoryState.type &&
         item.value === addCategoryState.value
@@ -57,21 +45,16 @@ const EditCategory = () => {
 
     if (!isValid) return
 
-    if (isGuest) {
+    if (auth?.id === 'guest') {
       let data = []
       const newData = {
         type: addCategoryState.type,
         value: addCategoryState.value,
       }
 
-      if (localStorageCategoryData) {
-        data = [...localStorageCategoryData, newData]
-      } else {
-        data = [...categoryData, newData]
-      }
+      data = [...categoryData, newData]
 
-      localStorage.setItem('categoryData', JSON.stringify(data))
-      dispatch(categoryDataAction.setCategoryData({ value: data }))
+      setStorageCategoryData(data)
       handleCancel()
     }
   }
@@ -80,13 +63,6 @@ const EditCategory = () => {
     dispatch(addCategoryAction.clearForm())
     setModalIsOpen(false)
   }
-
-  if (isLoading)
-    return (
-      <div className='edit-category'>
-        <Spinner />
-      </div>
-    )
 
   return (
     <section className='edit-category'>

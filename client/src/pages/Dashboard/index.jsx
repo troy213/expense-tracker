@@ -10,7 +10,6 @@ import useAuth from '../../hooks/useAuth'
 import { formatCurrency, getSearchData } from '../../utils'
 
 const Dashboard = () => {
-  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
   const localStorageTransactionsData = JSON.parse(
     localStorage.getItem('transactionsData')
   )
@@ -23,28 +22,7 @@ const Dashboard = () => {
   const searchState = useSelector((state) => state.search)
   const { transactionsData } = useSelector((state) => state.transactionsData)
   const dispatch = useDispatch()
-  const { auth, setAuth } = useAuth()
-
-  useEffect(() => {
-    if (isGuest) {
-      setAuth({
-        id: 'guest',
-        username: 'guest',
-        email: null,
-        accessToken: null,
-      })
-
-      if (localStorageTransactionsData) {
-        dispatch(
-          transactionsDataAction.setTransactionsData({
-            value: localStorageTransactionsData,
-          })
-        )
-      }
-    }
-
-    setIsLoading(false)
-  }, [])
+  const { auth } = useAuth()
 
   useEffect(() => {
     const income = transactionsData.reduce((acc, curr) => {
@@ -62,11 +40,12 @@ const Dashboard = () => {
 
     setTotalIncome(income)
     setTotalOutcome(outcome)
+    setIsLoading(false)
   }, [transactionsData])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!localStorageTransactionsData) return handleCancel()
+    if (!transactionsData.length) return handleCancel()
 
     dispatch(
       transactionsDataAction.setTransactionsData({

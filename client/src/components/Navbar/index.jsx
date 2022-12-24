@@ -9,15 +9,12 @@ import { Modal, Form } from '../'
 import { ReportsIcon, AddIcon, UserIcon } from '../../assets/icons'
 import { ADD_TRANSACTION_FORM } from './const'
 import { checkEmptyField } from '../../utils'
+import useAuth from '../../hooks/useAuth'
+import useStorage from '../../hooks/useStorage'
 
 const Navbar = () => {
-  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageCategoryData = JSON.parse(
-    localStorage.getItem('categoryData')
-  )
-  const localStorageTransactionsData = JSON.parse(
-    localStorage.getItem('transactionsData')
-  )
+  const { auth } = useAuth()
+  const { storageCategoryData, setStorageTransactionsData } = useStorage()
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const addTransactionState = useSelector((state) => state.addTransaction)
@@ -35,11 +32,9 @@ const Navbar = () => {
       ['error', 'description']
     )
 
-    console.log(isValid)
-
     if (!isValid) return
 
-    if (isGuest) {
+    if (auth?.id === 'guest') {
       let data = []
       const newData = {
         id: uuidv4(),
@@ -50,19 +45,10 @@ const Navbar = () => {
         amount: parseInt(addTransactionState.amount),
       }
 
-      if (localStorageTransactionsData) {
-        data = [...localStorageTransactionsData, newData]
-      } else {
-        data = [...transactionsData, newData]
-      }
+      data = [...transactionsData, newData]
 
-      localStorage.setItem('transactionsData', JSON.stringify(data))
-      dispatch(transactionsDataAction.setTransactionsData({ value: data }))
+      setStorageTransactionsData(data)
       handleCancel()
-    }
-
-    if (location.pathname === '/reports') {
-      window.location.reload()
     }
   }
 
@@ -80,7 +66,7 @@ const Navbar = () => {
             schema={ADD_TRANSACTION_FORM}
             state={addTransactionState}
             dependecyState={{
-              categoryData: localStorageCategoryData,
+              categoryData: storageCategoryData,
             }}
             action={addTransactionAction}
             onSubmit={handleSubmit}

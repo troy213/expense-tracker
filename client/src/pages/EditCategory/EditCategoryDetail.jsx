@@ -1,29 +1,27 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { editCategoryAction } from '../../store/edit-category-slice'
-import { categoryDataAction } from '../../store/category-data-slice'
 
 import { Form, Modal } from '../../components'
 import { EDIT_CATEGORY_FORM } from './const'
 import { checkEmptyField } from '../../utils'
+import useAuth from '../../hooks/useAuth'
+import useStorage from '../../hooks/useStorage'
 
 const EditCategoryDetail = (props) => {
   const { item } = props
-
-  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageCategoryData = JSON.parse(
-    localStorage.getItem('categoryData')
-  )
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
   const editCategoryState = useSelector((state) => state.editCategory)
   const { categoryData } = useSelector((state) => state.categoryData)
   const dispatch = useDispatch()
+  const { auth } = useAuth()
+  const { setStorageCategoryData } = useStorage()
 
   const handleModal = (content) => {
     if (content === 'editModal') {
-      const data = localStorageCategoryData.find(
+      const data = categoryData.find(
         (category) =>
           category.type === item.type && category.value === item.value
       )
@@ -49,48 +47,34 @@ const EditCategoryDetail = (props) => {
 
     if (!isValid) return
 
-    if (isGuest) {
+    if (auth?.id === 'guest') {
       let data = []
       const updatedData = {
         type: editCategoryState.type,
         value: editCategoryState.value,
       }
 
-      if (localStorageCategoryData) {
-        const index = localStorageCategoryData.findIndex(
-          (category) =>
-            category.type === item.type && category.value === item.value
-        )
-        data = [
-          ...localStorageCategoryData.slice(0, index),
-          updatedData,
-          ...localStorageCategoryData.slice(index + 1),
-        ]
-      } else {
-        const index = categoryData.findIndex(
-          (category) =>
-            category.type === item.type && category.value === item.value
-        )
-        data = [
-          ...categoryData.slice(0, index),
-          updatedData,
-          ...categoryData.slice(index + 1),
-        ]
-      }
+      const index = categoryData.findIndex(
+        (category) =>
+          category.type === item.type && category.value === item.value
+      )
+      data = [
+        ...categoryData.slice(0, index),
+        updatedData,
+        ...categoryData.slice(index + 1),
+      ]
 
-      localStorage.setItem('categoryData', JSON.stringify(data))
-      dispatch(categoryDataAction.setCategoryData({ value: data }))
+      setStorageCategoryData(data)
       handleCancel()
     }
   }
 
   const handleDelete = (item) => {
-    const newData = localStorageCategoryData.filter(
+    const newData = categoryData.filter(
       (category) =>
         !(category.type === item.type && category.value === item.value)
     )
-    localStorage.setItem('categoryData', JSON.stringify(newData))
-    dispatch(categoryDataAction.setCategoryData({ value: newData }))
+    setStorageCategoryData(newData)
     setModalIsOpen(false)
   }
 

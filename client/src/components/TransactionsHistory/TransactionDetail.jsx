@@ -1,28 +1,24 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { editTransactionAction } from '../../store/edit-transaction-slice'
-import { transactionsDataAction } from '../../store/transaction-data-slice'
 
 import { Form, Modal } from '../'
 import { EDIT_TRANSACTION_FORM } from './const'
 import { formatCurrency, checkEmptyField } from '../../utils'
+import useAuth from '../../hooks/useAuth'
+import useStorage from '../../hooks/useStorage'
 
 const TransactionDetail = (props) => {
   const { id, type, category, description, amount } = props.transactionDetail
-
-  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageTransactionsData = JSON.parse(
-    localStorage.getItem('transactionsData')
-  )
-  const localStorageCategoryData = JSON.parse(
-    localStorage.getItem('categoryData')
-  )
 
   const [isActive, setIsActive] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalContent, setModalContent] = useState('')
   const editTransactionState = useSelector((state) => state.editTransaction)
   const { transactionsData } = useSelector((state) => state.transactionsData)
+  const { categoryData } = useSelector((state) => state.categoryData)
+  const { auth } = useAuth()
+  const { setStorageTransactionsData } = useStorage()
   const dispatch = useDispatch()
 
   const handleCollapse = () => {
@@ -31,7 +27,7 @@ const TransactionDetail = (props) => {
 
   const handleModal = (content, id) => {
     if (content === 'editModal') {
-      const data = localStorageTransactionsData.find((value) => value.id === id)
+      const data = transactionsData.find((value) => value.id === id)
       for (const field in data) {
         const EXCEPTION = ['id']
         if (EXCEPTION.includes(field)) continue
@@ -57,7 +53,7 @@ const TransactionDetail = (props) => {
 
     if (!isValid) return
 
-    if (isGuest) {
+    if (auth?.id === 'guest') {
       let data = []
       const updatedData = {
         id,
@@ -68,28 +64,16 @@ const TransactionDetail = (props) => {
         amount: parseInt(editTransactionState.amount),
       }
 
-      if (localStorageTransactionsData) {
-        const index = localStorageTransactionsData.findIndex(
-          (transaction) => transaction.id === id
-        )
-        data = [
-          ...localStorageTransactionsData.slice(0, index),
-          updatedData,
-          ...localStorageTransactionsData.slice(index + 1),
-        ]
-      } else {
-        const index = transactionsData.findIndex(
-          (transaction) => transaction.id === id
-        )
-        data = [
-          ...transactionsData.slice(0, index),
-          updatedData,
-          ...transactionsData.slice(index + 1),
-        ]
-      }
+      const index = transactionsData.findIndex(
+        (transaction) => transaction.id === id
+      )
+      data = [
+        ...transactionsData.slice(0, index),
+        updatedData,
+        ...transactionsData.slice(index + 1),
+      ]
 
-      localStorage.setItem('transactionsData', JSON.stringify(data))
-      dispatch(transactionsDataAction.setTransactionsData({ value: data }))
+      setStorageTransactionsData(data)
       handleCancel()
     }
   }
@@ -100,11 +84,10 @@ const TransactionDetail = (props) => {
   }
 
   const handleDelete = (id) => {
-    const newData = localStorageTransactionsData.filter(
+    const newData = transactionsData.filter(
       (transaction) => transaction.id !== id
     )
-    localStorage.setItem('transactionsData', JSON.stringify(newData))
-    dispatch(transactionsDataAction.setTransactionsData({ value: newData }))
+    setStorageTransactionsData(newData)
     setModalIsOpen(false)
   }
 
@@ -115,7 +98,7 @@ const TransactionDetail = (props) => {
         <Form
           schema={EDIT_TRANSACTION_FORM}
           state={editTransactionState}
-          dependecyState={{ categoryData: localStorageCategoryData }}
+          dependecyState={{ categoryData }}
           action={editTransactionAction}
           onSubmit={(e) => handleSubmit(e, id)}
           onCancel={handleCancel}

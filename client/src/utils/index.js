@@ -2,6 +2,7 @@ import checkEmptyField from './checkEmptyField'
 import formatCurrency from './formatCurrency'
 import getChartData from './getChartData'
 import getFilterData from './getFilterData'
+import getFirstAndLastDate from './getFirstAndLastDate'
 import getGroupedCategory from './getGroupedCategory'
 import getGroupedTransaction from './getGroupedTransaction'
 import getReportData from './getReportData'
@@ -12,6 +13,7 @@ export {
   formatCurrency,
   getChartData,
   getFilterData,
+  getFirstAndLastDate,
   getGroupedCategory,
   getGroupedTransaction,
   getReportData,

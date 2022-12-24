@@ -7,32 +7,14 @@ import { Chart, Form, Modal, Spinner } from '../../components'
 import { ChevronLeftIcon, FilterIcon } from '../../assets/icons'
 import { FILTER_FORM, CHART_DATA_KEY, MONTHS } from './const'
 import { formatCurrency } from '../../utils'
-import { getReportData, getChartData, getFilterData } from '../../utils'
-
-const getFirstAndLastDate = (input) => {
-  const fromDate = new Date(input.from)
-  const toDate = new Date(input.to)
-
-  const from = new Date(
-    fromDate.getFullYear(),
-    fromDate.getMonth(),
-    1
-  ).toISOString()
-  const to = new Date(
-    toDate.getFullYear(),
-    toDate.getMonth() + 1,
-    0
-  ).toISOString()
-
-  return { from, to }
-}
+import {
+  getReportData,
+  getChartData,
+  getFilterData,
+  getFirstAndLastDate,
+} from '../../utils'
 
 const Reports = () => {
-  const isGuest = JSON.parse(localStorage.getItem('isGuest'))
-  const localStorageTransactionsData = JSON.parse(
-    localStorage.getItem('transactionsData')
-  )
-
   const [reportData, setReportData] = useState([])
   const [chartData, setChartData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -40,24 +22,23 @@ const Reports = () => {
   const [filterDate, setFilterDate] = useState(null)
 
   const filterState = useSelector((state) => state.filter)
+  const { transactionsData } = useSelector((state) => state.transactionsData)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!isGuest) return
-
-    if (localStorageTransactionsData && localStorageTransactionsData.length) {
-      setReportData(getReportData(localStorageTransactionsData))
-      setChartData(getChartData(localStorageTransactionsData))
+    if (transactionsData && transactionsData.length) {
+      setReportData(getReportData(transactionsData))
+      setChartData(getChartData(transactionsData))
     }
     setIsLoading(false)
-  }, [])
+  }, [transactionsData])
 
   const goBack = () => navigate('/')
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!localStorageTransactionsData) return handleCancel()
+    if (!transactionsData) return handleCancel()
 
     const date = getFirstAndLastDate({
       from: filterState.from,
@@ -65,12 +46,8 @@ const Reports = () => {
     })
 
     setFilterDate(date)
-    setReportData(
-      getReportData(getFilterData(localStorageTransactionsData, date))
-    )
-    setChartData(
-      getChartData(getFilterData(localStorageTransactionsData, date))
-    )
+    setReportData(getReportData(getFilterData(transactionsData, date)))
+    setChartData(getChartData(getFilterData(transactionsData, date)))
     handleCancel()
   }
 
@@ -120,7 +97,7 @@ const Reports = () => {
             } ${new Date(filterDate.to).getFullYear()}`
           : ''}
       </p>
-      {localStorageTransactionsData.length ? (
+      {transactionsData.length ? (
         <div className='reports__chart-container'>
           <Chart chartData={chartData} dataKey={CHART_DATA_KEY} />
         </div>
