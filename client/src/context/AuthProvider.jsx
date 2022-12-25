@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     if (isGuest) {
       setAuth({
         id: 'guest',
-        username: 'guest',
+        name: 'guest',
         email: null,
         accessToken: null,
       })

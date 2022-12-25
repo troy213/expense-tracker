@@ -1,19 +1,73 @@
-import { Link, useNavigate } from 'react-router-dom'
+import axios from '../../api/axios'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import useAuth from '../../hooks/useAuth'
+import { loginAction } from '../../store/login-slice'
 
 import { expenseTracker } from '../../assets/images'
 import { CATEGORY_DATA } from '../../data/categoryData'
 
 const Login = () => {
+  const loginState = useSelector((state) => state.login)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { setAuth } = useAuth()
+  const from = location.state?.from?.pathname || '/'
 
   const handleLoginGuest = () => {
-    setAuth({ id: 'guest', username: 'guest', email: null, accessToken: null })
+    setAuth({ id: 'guest', name: 'guest', email: null, accessToken: null })
     localStorage.setItem('isGuest', true)
     localStorage.setItem('transactionsData', JSON.stringify([]))
     localStorage.setItem('categoryData', JSON.stringify(CATEGORY_DATA))
     navigate('/')
+  }
+
+  const handleChange = (field, value) => {
+    dispatch(loginAction.setInputField({ field, value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const response = await axios.post(
+        '/api/login',
+        JSON.stringify({
+          email: loginState.email,
+          password: loginState.password,
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      )
+      const accessToken = response?.data?.accessToken
+      const name = response?.data?.name
+      const email = response?.data?.email
+      const id = response?.data?.id
+
+      setAuth({ id, name, email, accessToken })
+      dispatch(loginAction.clearForm())
+      navigate(from, { replace: true })
+    } catch (err) {
+      if (!err?.response) {
+        dispatch(
+          loginAction.setInputField({
+            field: 'errorMessage',
+            value: 'No server response',
+          })
+        )
+      } else {
+        dispatch(
+          loginAction.setInputField({
+            field: 'errorMessage',
+            value: err.response.data?.message,
+          })
+        )
+      }
+      errRef.current.focus() // to trigger aria accessibility
+    }
   }
 
   return (
@@ -21,7 +75,10 @@ const Login = () => {
       <div className='login__container'>
         <img src={expenseTracker} alt='logo' className='login__logo' />
         <p className='text--center text--bold text--8'>Sign In</p>
-        <form className='login__form'>
+        {loginState.errorMessage ? (
+          <p className='text--danger mt-4'>{loginState.errorMessage}</p>
+        ) : null}
+        <form className='login__form' onSubmit={handleSubmit}>
           <div className='login__input-wrapper'>
             <label htmlFor='email' className='text--light'>
               Email
@@ -31,6 +88,8 @@ const Login = () => {
               type='text'
               className='login__input'
               placeholder='user@mail.com'
+              value={loginState.email}
+              onChange={(e) => handleChange('email', e.target.value)}
             />
           </div>
           <div className='login__input-wrapper'>
@@ -42,6 +101,8 @@ const Login = () => {
               type='password'
               className='login__input'
               placeholder='password'
+              value={loginState.password}
+              onChange={(e) => handleChange('password', e.target.value)}
             />
           </div>
           <button

@@ -44,5 +44,9 @@
     &:focus {
       border-bottom: 2px solid $primary-color-dark;
     }
+
+    &--error {
+      border-bottom-color: $color-danger;
+    }
   }
 }

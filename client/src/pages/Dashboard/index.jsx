@@ -88,7 +88,9 @@ const Dashboard = () => {
       <div className='dashboard__header'>
         <p className='text--light'>
           Hi,{' '}
-          <span className='text--bold text--capitalize'>{auth?.username}</span>
+          <span className='text--bold text--capitalize'>
+            {auth?.name ? auth.name : 'User'}
+          </span>
         </p>
         <button
           className='dashboard__header-btn btn btn-link'
