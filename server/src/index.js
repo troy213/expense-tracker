@@ -27,6 +27,7 @@ const {
 } = require('./token')
 const { isAuth } = require('./isAuth')
 const credentials = require('./middleware/credentials')
+const { generateInitialCategory } = require('./utils')
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
@@ -52,11 +53,9 @@ app.post('/api/register', signUp, async (req, res) => {
     const id = uuidv4()
     const sql = 'INSERT INTO users (id, email, password) VALUES(?, ?, ?)'
     if (email && password) {
-      db.query(sql, [id, email, hashedPassword], (err, result) => {
+      db.query(sql, [id, email, hashedPassword], (err) => {
         if (err) throw err
-        return res
-          .status(200)
-          .json({ success: true, message: 'Sign Up success' })
+        generateInitialCategory(id, res)
       })
     } else {
       return res

@@ -59,11 +59,10 @@ const transactionsDelete = (req, res) => {
 }
 
 const transactionsPost = (req, res) => {
-  const { userId, date, type, category, description, amount } = req.body
-  const id = uuidv4()
+  const { id, userId, date, type, category, description, amount } = req.body
   const sql =
     'INSERT INTO transactions_data (id, id_user, date, type, category, description, amount) VALUES(?, ?, ?, ?, ?, ?, ?)'
-  if (userId && date && type && category && amount) {
+  if (id && userId && date && type && category && amount) {
     db.query(
       sql,
       [id, userId, date, type, category, description, amount],
