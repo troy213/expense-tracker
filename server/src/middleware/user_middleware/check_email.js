@@ -4,10 +4,7 @@ const checkEmail = (req, res, next) => {
   const { email } = req.body
   const sql = 'SELECT email FROM users WHERE email=?'
   db.query(sql, email, (err, result) => {
-    if (err) {
-      console.log(err)
-      return res.status(500).json({ success: false, message: err })
-    }
+    if (err) return res.status(500).json({ success: false, message: err })
     if (result.length > 0) {
       res.status(409).json({
         success: false,

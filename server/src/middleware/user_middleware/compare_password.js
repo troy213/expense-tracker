@@ -11,7 +11,6 @@ const comparePassword = async (req, res, next) => {
         .json({ success: false, message: 'invalid password' })
     }
   } catch (err) {
-    console.log(err)
     res
       .status(500)
       .json({ success: false, message: 'failed to change password' })
