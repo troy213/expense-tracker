@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import cogoToast from 'cogo-toast'
 import { editTransactionAction } from '../../store/edit-transaction-slice'
+import { transactionsDataAction } from '../../store/transaction-data-slice'
 
 import { Form, Modal } from '../'
 import { EDIT_TRANSACTION_FORM } from './const'
 import { formatCurrency, checkEmptyField } from '../../utils'
 import useAuth from '../../hooks/useAuth'
 import useStorage from '../../hooks/useStorage'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const TransactionDetail = (props) => {
   const { id, type, category, description, amount } = props.transactionDetail
@@ -20,6 +23,7 @@ const TransactionDetail = (props) => {
   const { auth } = useAuth()
   const { setStorageTransactionsData } = useStorage()
   const dispatch = useDispatch()
+  const axiosPrivate = useAxiosPrivate()
 
   const handleCollapse = () => {
     setIsActive(!isActive)
@@ -53,17 +57,17 @@ const TransactionDetail = (props) => {
 
     if (!isValid) return
 
-    if (auth?.id === 'guest') {
-      let data = []
-      const updatedData = {
-        id,
-        date: editTransactionState.date,
-        type: editTransactionState.type,
-        category: editTransactionState.category,
-        description: editTransactionState.description,
-        amount: parseInt(editTransactionState.amount),
-      }
+    const updatedData = {
+      id,
+      id_user: auth.id,
+      date: editTransactionState.date,
+      type: editTransactionState.type,
+      category: editTransactionState.category,
+      description: editTransactionState.description,
+      amount: parseInt(editTransactionState.amount),
+    }
 
+    if (auth?.id === 'guest') {
       const index = transactionsData.findIndex(
         (transaction) => transaction.id === id
       )
@@ -74,7 +78,41 @@ const TransactionDetail = (props) => {
       ]
 
       setStorageTransactionsData(data)
-      handleCancel()
+    } else {
+      submitForm(updatedData)
+    }
+    handleCancel()
+  }
+
+  const submitForm = async (data) => {
+    try {
+      const response = await axiosPrivate.put(
+        '/api/transaction',
+        JSON.stringify(data),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      )
+
+      const index = transactionsData.findIndex(
+        (transaction) => transaction.id === id
+      )
+      dispatch(
+        transactionsDataAction.setTransactionsData({
+          value: [
+            ...transactionsData.slice(0, index),
+            data,
+            ...transactionsData.slice(index + 1),
+          ],
+        })
+      )
+    } catch (err) {
+      if (!err?.response) {
+        cogoToast.error('No Server Response')
+      } else {
+        cogoToast.error(err.response?.data?.message)
+      }
     }
   }
 
@@ -83,11 +121,28 @@ const TransactionDetail = (props) => {
     setModalIsOpen(false)
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const newData = transactionsData.filter(
       (transaction) => transaction.id !== id
     )
-    setStorageTransactionsData(newData)
+    if (auth?.id === 'guest') {
+      setStorageTransactionsData(newData)
+    } else {
+      try {
+        const response = await axiosPrivate.delete(`/api/transaction/${id}`)
+        dispatch(
+          transactionsDataAction.setTransactionsData({
+            value: newData,
+          })
+        )
+      } catch (err) {
+        if (!err?.response) {
+          cogoToast.error('No Server Response')
+        } else {
+          cogoToast.error(err.response?.data?.message)
+        }
+      }
+    }
     setModalIsOpen(false)
   }
 

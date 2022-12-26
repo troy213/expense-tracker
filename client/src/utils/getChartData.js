@@ -1,3 +1,5 @@
+import getDateInTimezone from './getDateInTimezone'
+
 const getChartData = (input) => {
   const MONTHS = [
     'Jan',
@@ -15,7 +17,8 @@ const getChartData = (input) => {
   ]
 
   const result = input.reduce((acc, curr) => {
-    const date = new Date(curr.date)
+    const timezoneDate = getDateInTimezone(curr.date)
+    const date = new Date(timezoneDate)
     const month = MONTHS[date.getMonth()]
     const year = date.getFullYear()
     const key = `${month} ${year}`

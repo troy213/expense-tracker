@@ -12,6 +12,7 @@ import { getGroupedCategory, checkEmptyField } from '../../utils'
 import { ADD_CATEGORY_FORM } from './const'
 import useAuth from '../../hooks/useAuth'
 import useStorage from '../../hooks/useStorage'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const EditCategory = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -19,7 +20,7 @@ const EditCategory = () => {
   const { categoryData } = useSelector((state) => state.categoryData)
   const { auth } = useAuth()
   const { setStorageCategoryData } = useStorage()
-
+  const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -45,17 +46,39 @@ const EditCategory = () => {
 
     if (!isValid) return
 
-    if (auth?.id === 'guest') {
-      let data = []
-      const newData = {
-        type: addCategoryState.type,
-        value: addCategoryState.value,
-      }
+    const newData = {
+      type: addCategoryState.type,
+      value: addCategoryState.value,
+    }
 
+    if (auth?.id === 'guest') {
       data = [...categoryData, newData]
 
       setStorageCategoryData(data)
-      handleCancel()
+    } else {
+      submitForm(newData)
+    }
+    handleCancel()
+  }
+
+  const submitForm = async (data) => {
+    data.userId = auth.id
+    try {
+      const response = await axiosPrivate.post(
+        '/api/category',
+        JSON.stringify(data)
+      )
+      dispatch(
+        categoryDataAction.setCategoryData({
+          value: [...categoryData, data],
+        })
+      )
+    } catch (err) {
+      if (!err?.response) {
+        cogoToast.error('No Server Response')
+      } else {
+        cogoToast.error(err.response?.data?.message)
+      }
     }
   }
 

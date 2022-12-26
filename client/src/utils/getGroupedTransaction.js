@@ -1,3 +1,5 @@
+import getDateInTimezone from './getDateInTimezone'
+
 const getGroupedTransaction = (data) => {
   const MONTHS = [
     'January',
@@ -16,9 +18,10 @@ const getGroupedTransaction = (data) => {
   const groupedData = []
 
   for (const item of data) {
-    const year = new Date(item.date).getFullYear()
-    const month = MONTHS[new Date(item.date).getMonth()]
-    const date = new Date(item.date).getDate()
+    const timezoneDate = getDateInTimezone(item.date)
+    const year = new Date(timezoneDate).getFullYear()
+    const month = MONTHS[new Date(timezoneDate).getMonth()]
+    const date = new Date(timezoneDate).getDate()
     const monthIndex = groupedData.findIndex(
       (obj) => obj.month === `${month} ${year}`
     )

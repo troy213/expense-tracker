@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import cogoToast from 'cogo-toast'
 import { editCategoryAction } from '../../store/edit-category-slice'
+import { categoryDataAction } from '../../store/category-data-slice'
 
 import { Form, Modal } from '../../components'
 import { EDIT_CATEGORY_FORM } from './const'
 import { checkEmptyField } from '../../utils'
 import useAuth from '../../hooks/useAuth'
 import useStorage from '../../hooks/useStorage'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 
 const EditCategoryDetail = (props) => {
   const { item } = props
@@ -15,6 +18,7 @@ const EditCategoryDetail = (props) => {
   const [modalContent, setModalContent] = useState('')
   const editCategoryState = useSelector((state) => state.editCategory)
   const { categoryData } = useSelector((state) => state.categoryData)
+  const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
   const { auth } = useAuth()
   const { setStorageCategoryData } = useStorage()
@@ -47,13 +51,12 @@ const EditCategoryDetail = (props) => {
 
     if (!isValid) return
 
-    if (auth?.id === 'guest') {
-      let data = []
-      const updatedData = {
-        type: editCategoryState.type,
-        value: editCategoryState.value,
-      }
+    const updatedData = {
+      type: editCategoryState.type,
+      value: editCategoryState.value,
+    }
 
+    if (auth?.id === 'guest') {
       const index = categoryData.findIndex(
         (category) =>
           category.type === item.type && category.value === item.value
@@ -65,16 +68,72 @@ const EditCategoryDetail = (props) => {
       ]
 
       setStorageCategoryData(data)
-      handleCancel()
+    } else {
+      submitForm(updatedData)
+    }
+    handleCancel()
+  }
+
+  const submitForm = async (data) => {
+    data.id = item.id
+    data.userId = item.id_user
+
+    try {
+      const response = await axiosPrivate.put(
+        '/api/category',
+        JSON.stringify(data),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        }
+      )
+
+      const index = categoryData.findIndex(
+        (category) =>
+          category.type === item.type && category.value === item.value
+      )
+      dispatch(
+        categoryDataAction.setCategoryData({
+          value: [
+            ...categoryData.slice(0, index),
+            data,
+            ...categoryData.slice(index + 1),
+          ],
+        })
+      )
+    } catch (err) {
+      if (!err?.response) {
+        cogoToast.error('No Server Response')
+      } else {
+        cogoToast.error(err.response?.data?.message)
+      }
     }
   }
 
-  const handleDelete = (item) => {
+  const handleDelete = async (item) => {
     const newData = categoryData.filter(
       (category) =>
         !(category.type === item.type && category.value === item.value)
     )
-    setStorageCategoryData(newData)
+
+    if (auth?.id === 'guest') {
+      setStorageCategoryData(newData)
+    } else {
+      try {
+        const response = await axiosPrivate.delete(`/api/category/${item.id}`)
+        dispatch(
+          categoryDataAction.setCategoryData({
+            value: newData,
+          })
+        )
+      } catch (err) {
+        if (!err?.response) {
+          cogoToast.error('No Server Response')
+        } else {
+          cogoToast.error(err.response?.data?.message)
+        }
+      }
+    }
     setModalIsOpen(false)
   }
 

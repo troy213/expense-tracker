@@ -1,6 +1,7 @@
 import checkEmptyField from './checkEmptyField'
 import formatCurrency from './formatCurrency'
 import getChartData from './getChartData'
+import getDateInTimezone from './getDateInTimezone'
 import getFilterData from './getFilterData'
 import getFirstAndLastDate from './getFirstAndLastDate'
 import getGroupedCategory from './getGroupedCategory'
@@ -12,6 +13,7 @@ export {
   checkEmptyField,
   formatCurrency,
   getChartData,
+  getDateInTimezone,
   getFilterData,
   getFirstAndLastDate,
   getGroupedCategory,

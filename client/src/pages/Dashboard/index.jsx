@@ -10,13 +10,11 @@ import useAuth from '../../hooks/useAuth'
 import { formatCurrency, getSearchData } from '../../utils'
 
 const Dashboard = () => {
-  const localStorageTransactionsData = JSON.parse(
-    localStorage.getItem('transactionsData')
-  )
-
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [totalIncome, setTotalIncome] = useState(0)
   const [totalOutcome, setTotalOutcome] = useState(0)
+  const [searchedData, setSearchedData] = useState([])
+  const [isSearched, setIsSearched] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   const searchState = useSelector((state) => state.search)
@@ -47,14 +45,8 @@ const Dashboard = () => {
     e.preventDefault()
     if (!transactionsData.length) return handleCancel()
 
-    dispatch(
-      transactionsDataAction.setTransactionsData({
-        value: getSearchData(
-          searchState.description,
-          localStorageTransactionsData
-        ),
-      })
-    )
+    setSearchedData(getSearchData(searchState.description, transactionsData))
+    setIsSearched(true)
     handleCancel()
   }
 
@@ -118,7 +110,9 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <TransactionHistory transactionsData={transactionsData} />
+      <TransactionHistory
+        transactionsData={isSearched ? searchedData : transactionsData}
+      />
     </div>
   )
 }
