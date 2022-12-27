@@ -49,7 +49,7 @@ const Navbar = () => {
     }
 
     if (auth?.id === 'guest') {
-      data = [...transactionsData, newData]
+      const data = [...transactionsData, newData]
 
       setStorageTransactionsData(data)
     } else {

@@ -71,7 +71,7 @@ const TransactionDetail = (props) => {
       const index = transactionsData.findIndex(
         (transaction) => transaction.id === id
       )
-      data = [
+      const data = [
         ...transactionsData.slice(0, index),
         updatedData,
         ...transactionsData.slice(index + 1),

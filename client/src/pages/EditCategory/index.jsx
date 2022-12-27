@@ -52,7 +52,7 @@ const EditCategory = () => {
     }
 
     if (auth?.id === 'guest') {
-      data = [...categoryData, newData]
+      const data = [...categoryData, newData]
 
       setStorageCategoryData(data)
     } else {

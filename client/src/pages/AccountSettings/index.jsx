@@ -20,6 +20,17 @@ const AccountSettings = () => {
       <div className='account-settings__container'>
         <form className='account-settings__form'>
           <div className='account-settings__input-wrapper'>
+            <label htmlFor='name' className='text--light'>
+              Name
+            </label>
+            <input
+              id='name'
+              type='text'
+              className='account-settings__input'
+              placeholder='name'
+            />
+          </div>
+          <div className='account-settings__input-wrapper'>
             <label htmlFor='email' className='text--light'>
               Email
             </label>

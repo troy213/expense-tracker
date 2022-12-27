@@ -61,7 +61,7 @@ const EditCategoryDetail = (props) => {
         (category) =>
           category.type === item.type && category.value === item.value
       )
-      data = [
+      const data = [
         ...categoryData.slice(0, index),
         updatedData,
         ...categoryData.slice(index + 1),
@@ -145,7 +145,7 @@ const EditCategoryDetail = (props) => {
   const renderModal = {
     editModal: (
       <div className='modal__content--default'>
-        <p className='text--bold'>Add Category</p>
+        <p className='text--bold'>Edit Category</p>
         <Form
           schema={EDIT_CATEGORY_FORM}
           state={editCategoryState}
