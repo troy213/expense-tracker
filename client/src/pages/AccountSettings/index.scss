@@ -26,33 +26,15 @@
     gap: 1rem;
   }
 
-  &__form {
+  &__item {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 1rem;
   }
 
-  &__input-wrapper {
+  &__value {
     display: flex;
-    flex-direction: column;
-  }
-
-  &__input {
-    padding: 1em 0;
-    border: none;
-    border-bottom: 1px solid $primary-color-dark;
-    outline: none;
-    font-size: 1rem;
-    background-color: transparent;
-
-    &::placeholder {
-      font-size: 0.75rem;
-      color: rgba($color: $primary-color-dark, $alpha: 0.5);
-    }
-
-    &:focus {
-      border-bottom: 2px solid $primary-color-dark;
-    }
+    justify-content: space-between;
+    align-items: center;
   }
 }

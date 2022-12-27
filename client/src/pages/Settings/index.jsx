@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { transactionsDataAction } from '../../store/transaction-data-slice'
+import { categoryDataAction } from '../../store/category-data-slice'
 
 import useAuth from '../../hooks/useAuth'
 import useLogout from '../../hooks/useLogout'
@@ -16,6 +19,7 @@ import {
 const Settings = () => {
   const [modalIsOpen, setModalIsOpen] = useState()
   const { auth } = useAuth()
+  const dispatch = useDispatch()
   const logout = useLogout()
   const navigate = useNavigate()
 
@@ -25,6 +29,8 @@ const Settings = () => {
     if (auth?.id === 'guest') {
       setModalIsOpen(true)
     } else {
+      dispatch(transactionsDataAction.setTransactionsData({ value: [] }))
+      dispatch(categoryDataAction.setCategoryData({ value: [] }))
       await logout()
       navigate('/login')
     }
@@ -73,10 +79,13 @@ const Settings = () => {
           {auth?.name ? auth.name : 'User'}
         </span>
       </p>
-      <Link to='/account' className='settings__link'>
-        <UserIcon />
-        <p className='text--bold'>Account Settings</p>
-      </Link>
+      {auth?.id !== 'guest' ? (
+        <Link to='/account' className='settings__link'>
+          <UserIcon />
+          <p className='text--bold'>Account Settings</p>
+        </Link>
+      ) : null}
+
       <Link to='/edit-category' className='settings__link'>
         <CategoryIcon />
         <p className='text--bold'>Edit Category</p>

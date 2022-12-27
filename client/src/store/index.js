@@ -9,6 +9,7 @@ import categoryDataSlice from './category-data-slice'
 import editCategorySlice from './edit-category-slice'
 import loginSlice from './login-slice'
 import registerSlice from './register-slice'
+import editAccountSlice from './edit-account-slice'
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     editCategory: editCategorySlice.reducer,
     login: loginSlice.reducer,
     register: registerSlice.reducer,
+    editAccount: editAccountSlice.reducer,
   },
 })
 

@@ -138,6 +138,19 @@ const Form = (props) => {
               />
             ) : null}
 
+            {type === 'password' ? (
+              <input
+                type='password'
+                id={id}
+                value={state[id]}
+                onChange={(e) => handleChange(id, e.target.value, validation)}
+                className={`form__input${
+                  state.error[id] ? ' form__input--error' : ''
+                }`}
+                placeholder={placeholder}
+              />
+            ) : null}
+
             {state.error[id] ? (
               <p className='text--light text--3 text--danger mt-2'>
                 {helperText}
