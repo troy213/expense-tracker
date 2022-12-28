@@ -59,7 +59,6 @@ const transactionsDelete = (req, res) => {
 
 const transactionsPost = (req, res) => {
   const { id, userId, date, type, category, description, amount } = req.body
-  console.log(date)
   const sql =
     'INSERT INTO transactions_data (id, id_user, date, type, category, description, amount) VALUES(?, ?, ?, ?, ?, ?, ?)'
   if (id && userId && date && type && category && amount) {
