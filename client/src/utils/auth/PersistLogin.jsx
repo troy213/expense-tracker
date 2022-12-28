@@ -20,7 +20,9 @@ const PersistLogin = () => {
       }
     }
 
-    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false)
+    !auth?.accessToken && auth?.id !== 'guest'
+      ? verifyRefreshToken()
+      : setIsLoading(false)
   }, [])
 
   return <>{isLoading ? <Spinner /> : <Outlet />}</>

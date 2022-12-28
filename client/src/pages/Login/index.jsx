@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import useAuth from '../../hooks/useAuth'
 import { loginAction } from '../../store/login-slice'
+import { categoryDataAction } from '../../store/category-data-slice'
 
 import { expenseTracker } from '../../assets/images'
 import { CATEGORY_DATA } from '../../data/categoryData'
@@ -20,6 +21,7 @@ const Login = () => {
     localStorage.setItem('isGuest', true)
     localStorage.setItem('transactionsData', JSON.stringify([]))
     localStorage.setItem('categoryData', JSON.stringify(CATEGORY_DATA))
+    dispatch(categoryDataAction.setCategoryData({ value: CATEGORY_DATA }))
     navigate('/')
   }
 
@@ -66,7 +68,6 @@ const Login = () => {
           })
         )
       }
-      errRef.current.focus() // to trigger aria accessibility
     }
   }
 
