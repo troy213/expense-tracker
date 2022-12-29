@@ -81,7 +81,6 @@ export const StorageProvider = ({ children }) => {
           )
         }
       } catch (err) {
-        console.error(err)
         navigate('/login', { state: { from: location }, replace: true })
       }
     }
@@ -100,7 +99,6 @@ export const StorageProvider = ({ children }) => {
           )
         }
       } catch (err) {
-        console.error(err)
         navigate('/login', { state: { from: location }, replace: true })
       }
     }

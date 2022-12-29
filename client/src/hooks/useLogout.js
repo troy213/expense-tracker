@@ -15,7 +15,7 @@ const useLogout = () => {
         }
       )
     } catch (err) {
-      console.error('Logout Error:', err)
+      // console.error('Logout Error:', err)
     }
   }
   return logout

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import axios from '../../api/axios'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -5,10 +6,12 @@ import useAuth from '../../hooks/useAuth'
 import { loginAction } from '../../store/login-slice'
 import { categoryDataAction } from '../../store/category-data-slice'
 
+import { Spinner } from '../../components'
 import { expenseTracker } from '../../assets/images'
 import { CATEGORY_DATA } from '../../data/categoryData'
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const loginState = useSelector((state) => state.login)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -31,6 +34,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
 
     try {
       const response = await axios.post(
@@ -51,8 +55,10 @@ const Login = () => {
 
       setAuth({ id, name, email, accessToken })
       dispatch(loginAction.clearForm())
+      setIsLoading(false)
       navigate(from, { replace: true })
     } catch (err) {
+      setIsLoading(false)
       if (!err?.response) {
         dispatch(
           loginAction.setInputField({
@@ -70,6 +76,8 @@ const Login = () => {
       }
     }
   }
+
+  if (isLoading) return <Spinner />
 
   return (
     <section className='login'>

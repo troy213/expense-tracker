@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { registerAction } from '../../store/register-slice'
 import axios from '../../api/axios'
 
-import { Modal } from '../../components'
+import { Modal, Spinner } from '../../components'
 import { REGEX } from './const'
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const registerState = useSelector((state) => state.register)
   const { email, password, rePassword, errorMessage, error } = registerState
@@ -52,6 +53,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
 
     for (const properties in error) {
       if (error[properties]) return
@@ -68,7 +70,9 @@ const Register = () => {
       )
       setModalIsOpen(true)
       dispatch(registerAction.clearForm())
+      setIsLoading(false)
     } catch (err) {
+      setIsLoading(false)
       if (!err?.response) {
         dispatch(
           registerAction.setInputField({
@@ -86,6 +90,13 @@ const Register = () => {
       }
     }
   }
+
+  if (isLoading)
+    return (
+      <section className='register'>
+        <Spinner />
+      </section>
+    )
 
   return (
     <section className='register'>
