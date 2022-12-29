@@ -1,5 +1,5 @@
 import axios from 'axios'
-const BASE_URL = 'https://expense-tracker-9ifojdxqq-troy213.vercel.app'
+const BASE_URL = 'https://expense-tracker-mu-one.vercel.app'
 // const BASE_URL = 'http://127.0.0.1:5000'
 // const BASE_URL = 'http://localhost:5000'
 
