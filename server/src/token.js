@@ -25,6 +25,8 @@ const sendRefreshToken = (res, token) => {
   // in real use case, you should not name your cookie 'refreshToken', it's for demonstration purpose
   res.cookie('refreshtoken', token, {
     httpOnly: true,
+    sameSite: 'None',
+    secure: true,
     path: '/api/refresh_token',
   })
 }

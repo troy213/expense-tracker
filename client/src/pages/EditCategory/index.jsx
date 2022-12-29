@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import cogoToast from 'cogo-toast'
+import { v4 as uuidv4 } from 'uuid'
 import { addCategoryAction } from '../../store/add-category-slice'
 import { categoryDataAction } from '../../store/category-data-slice'
 
@@ -62,15 +63,21 @@ const EditCategory = () => {
   }
 
   const submitForm = async (data) => {
+    data.id = uuidv4()
     data.userId = auth.id
+
     try {
       const response = await axiosPrivate.post(
         '/api/category',
         JSON.stringify(data)
       )
+
+      const newData = { ...data, id_user: data.userId }
+      delete newData.userId
+
       dispatch(
         categoryDataAction.setCategoryData({
-          value: [...categoryData, data],
+          value: [...categoryData, newData],
         })
       )
     } catch (err) {

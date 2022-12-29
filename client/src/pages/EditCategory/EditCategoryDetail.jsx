@@ -92,11 +92,15 @@ const EditCategoryDetail = (props) => {
         (category) =>
           category.type === item.type && category.value === item.value
       )
+
+      const newData = { ...data, id_user: data.userId }
+      delete newData.userId
+
       dispatch(
         categoryDataAction.setCategoryData({
           value: [
             ...categoryData.slice(0, index),
-            data,
+            newData,
             ...categoryData.slice(index + 1),
           ],
         })

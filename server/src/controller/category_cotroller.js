@@ -61,11 +61,11 @@ const categoryDelete = (req, res) => {
 }
 
 const categoryPost = (req, res) => {
-  const { userId, type, value } = req.body
-  const id = uuidv4()
+  const { id, userId, type, value } = req.body
+
   const sql =
     'INSERT INTO category_data (id, id_user, type, value) VALUES(?, ?, ?, ?)'
-  if (userId && type && value) {
+  if (id && userId && type && value) {
     db.query(sql, [id, userId, type, value], (err) => {
       if (err) return res.status(500).json({ success: false, message: err })
       return res.status(200).json({ success: true })
